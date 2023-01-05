@@ -27,4 +27,5 @@ public class Continent {
         this.id = id;
         this.name = name;
     }
+
 }
