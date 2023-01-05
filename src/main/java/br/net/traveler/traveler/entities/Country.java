@@ -20,11 +20,11 @@ public class Country {
     Integer id;
     String name;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "continentId")
     Continent continent;
 
-    @OneToMany(mappedBy = "country")
+    @OneToMany(mappedBy = "country",  cascade = CascadeType.ALL)
     List<Destination> destinations = new ArrayList<>();
 
     public Country(Integer id, String name, Continent continent){

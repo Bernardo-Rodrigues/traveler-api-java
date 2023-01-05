@@ -20,7 +20,7 @@ public class Continent {
     Integer id;
     String name;
 
-    @OneToMany(mappedBy = "continent")
+    @OneToMany(mappedBy = "continent",  cascade = CascadeType.ALL)
     List<Country> countries = new ArrayList<>();
 
     public Continent(Integer id, String name){

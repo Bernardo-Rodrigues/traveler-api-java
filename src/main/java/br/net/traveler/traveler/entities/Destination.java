@@ -3,12 +3,17 @@ package br.net.traveler.traveler.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "destinations")
 @Getter
 @Setter
+@ToString
 @Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Destination {
 
     @Id
@@ -17,13 +22,16 @@ public class Destination {
     String name;
     String imageLink;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "countryId")
     Country country;
 
-    @OneToOne
+    @OneToOne()
     @MapsId
     Localization localization;
+
+    @OneToMany(mappedBy = "destination",  cascade = CascadeType.ALL)
+    List<Tip> tips = new ArrayList<>();
 
     public Destination(Integer id, String name, String imageLink, Country country, Localization localization){
         this.id = id;
