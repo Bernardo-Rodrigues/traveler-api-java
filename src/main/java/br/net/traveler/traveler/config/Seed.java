@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 @Configuration
@@ -26,9 +25,13 @@ public class Seed implements CommandLineRunner {
 
     @Autowired
     private TipRepository tipRepository;
+    @Autowired
+    private DescriptionRepository descriptionRepository;
 
     @Override
     public void run(String... args) throws Exception {
+
+
         Continent continent1 = Continent.builder().name("South America").build();
         Continent continent2 = Continent.builder().name("North America").build();
         Continent continent3 = Continent.builder().name("Europe").build();
@@ -153,5 +156,80 @@ public class Seed implements CommandLineRunner {
 
         tipRepository.saveAll(Arrays.asList(tip1, tip2, tip3, tip4, tip5, tip6, tip7, tip8,
                                             tip9, tip10, tip11, tip12, tip13, tip14, tip15));
+
+        Description description1 = Description.builder()
+                .text("Huayna Picchu Picchu or Machu Picchu (in Quechua Machu Picchu, \"old mountain\"), also called \"lost city of the Incas\", is a well-preserved pre-Columbian city, located on top of a mountain, at an altitude of 2,400 meters, in the valley of the Urubamba River, present-day Peru.")
+                .type("About Destination")
+                .destination(destination1)
+                .build();
+        Description description2 = Description.builder()
+                .text("Mount Everest  is Earth's highest mountain above sea level, located in the Mahalangur Himal sub-range of the Himalayas. The China–Nepal border runs across its summit point. Its elevation (snow height) of 8,848.86 m (29,031.7 ft) was most recently established in 2020 by the Chinese and Nepali authorities.")
+                .type("About Destination")
+                .destination(destination2)
+                .build();
+        Description description3 = Description.builder()
+                .text("Paris is the capital and most populous city in France, with an estimated 2020 population of 2,148,271 in an area of 105 square kilometers. second most expensive city in the world, behind only Singapore and ahead of Zurich, Hong Kong, Oslo and Geneva.")
+                .type("About Destination")
+                .destination(destination3)
+                .build();
+        Description description4 = Description.builder()
+                .text("Rio de Janeiro is a Brazilian municipality, capital of the homonymous state, located in the Southeast of the country. Largest international tourist destination in Brazil, Latin America and the entire Southern Hemisphere (in 2008), the capital of Rio de Janeiro is the best known Brazilian city abroad, functioning as a national \"mirror\", or \"portrait\".")
+                .type("About Destination")
+                .destination(destination4)
+                .build();
+        Description description5 = Description.builder()
+                .text("Rome is the capital city of Italy. It is also the capital of the Lazio region, the centre of the Metropolitan City of Rome, and a special comune named Comune di Roma Capitale. With 2,860,009 residents in 1,285 km2 (496.1 sq mi), Rome is the country's most populated comune and the third most populous city in the European Union.")
+                .type("About Destination")
+                .destination(destination5)
+                .build();
+        Description description6 = Description.builder()
+                .text("The Spanish conqueror Baltasar de Ocampo had notes of a visit during the late 16th century to a mountain fortress called Pitcos with very sumptuous and majestic buildings, erected with great skill and art, all the lintels of the doors, as well as the main and the vulgar, being of marble, elaborately carved. Therefore, we can consider him the first discoverer from outside the region.")
+                .type("Discoverer")
+                .destination(destination1)
+                .build();
+        Description description7 = Description.builder()
+                .text("Mount Everest has been host to other winter sports and adventuring besides mountaineering, including snowboarding, skiing, paragliding, and BASE jumping.")
+                .type("Extreme Sports")
+                .destination(destination2)
+                .build();
+        Description description8 = Description.builder()
+                .text("In 2008, a new weather station at about 8,000 m (26,000 ft) elevation went online.The station's first data in May 2008 were air temperature −17 °C (1 °F), relative humidity 41.3 per cent, atmospheric pressure 382.1 hPa (38.21 kPa), wind direction 262.8°, wind speed 12.8 m/s (28.6 mph, 46.1 km/h), global solar radiation 711.9 watts/m2, solar UVA radiation 30.4 W/m2.")
+                .type("Meteorology")
+                .destination(destination2)
+                .build();
+        Description description9 = Description.builder()
+                .text("Paris Saint-Germain football club and Stade Français rugby club are based in Paris. The 81,000-seat Stade de France, built for the 1998 FIFA World Cup, is located north of the city, in the neighboring commune of Saint-Denis. Paris annually organizes the Grand Slam tennis tournament. It hosted the 1900 and 1924 Summer Olympics, and is expected to host the 2024. Paris was also the host city for the 1938 and 1998 FIFA World Cups, the 2007 Rugby Union World Cup and the European Football Championship in 1960, 1984 and 2016. The Tour de France road cycling competition ends in Paris every July")
+                .type("Sports")
+                .destination(destination3)
+                .build();
+        Description description10 = Description.builder()
+                .text("Its coastline is 197 kilometers long and includes more than one hundred islands that occupy 37 km², and is divided into three parts, facing Sepetiba Bay, the Atlantic Ocean and Guanabara Bay.")
+                .type("Coastline")
+                .destination(destination4)
+                .build();
+        Description description11 = Description.builder()
+                .text("The city experiences hot, humid summers and warm, sunny winters. In the inner areas of the city, temperatures above 40 °C are common during the summer, although rarely for long periods, while maximum temperatures above 23 °C can occur monthly.")
+                .type("Climate")
+                .destination(destination4)
+                .build();
+        Description description12 = Description.builder()
+                .text("In 2019, Rome was the 14th most visited city in the world, with 8.6 million tourists, the third most visited in the European Union, and the most popular tourist destination in Italy. Rome today is one of the most important tourist destinations of the world, due to the incalculable immensity of its archaeological and artistic treasures, as well as for the charm of its unique traditions, the beauty of its panoramic views, and the majesty of its magnificent \"villas\" (parks).")
+                .type("Tourism")
+                .destination(destination5)
+                .build();
+        Description description13 = Description.builder()
+                .text("Bali is an island and province of Indonesia, situated at the western end of the Lesser Sunda Islands archipelago, between the islands of Java (to the west) and Lombok (to the east). roughly in the middle of the south coast.It is known for the cultural manifestations of its people, such as dance, sculpture, painting, leather and metal work and music. Bali is part of the Coral Triangle, a maritime area of \u200B\u200Bextremely high biodiversity, where more than 500 species of coral are found (76% of the number known worldwide).")
+                .type("About")
+                .destination(destination6)
+                .build();
+        Description description14 = Description.builder()
+                .text("The name Bali, with which the island was named in the 9th century, derives from the word Wali. Wali or Wari was the term by which the natives, who greatly venerated their gods, called the act of worship. Wali is a Sanskrit word meaning \"sacrifice offered to the god\", \"worship\", \"worship\" or \"offering\".")
+                .type("Etymology")
+                .destination(destination6)
+                .build();
+
+        descriptionRepository.saveAll(Arrays.asList(description1, description2, description3, description4, description5, description6,
+                                                    description7, description8,  description9, description10, description11, description12,
+                                                    description13, description14));
     }
 }

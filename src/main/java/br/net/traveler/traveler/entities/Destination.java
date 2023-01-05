@@ -26,12 +26,15 @@ public class Destination {
     @JoinColumn(name = "countryId")
     Country country;
 
-    @OneToOne()
+    @OneToOne
     @MapsId
     Localization localization;
 
     @OneToMany(mappedBy = "destination",  cascade = CascadeType.ALL)
     List<Tip> tips = new ArrayList<>();
+
+    @OneToMany(mappedBy = "destination",  cascade = CascadeType.ALL)
+    List<Description> descriptions = new ArrayList<>();
 
     public Destination(Integer id, String name, String imageLink, Country country, Localization localization){
         this.id = id;
