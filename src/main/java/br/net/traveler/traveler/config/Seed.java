@@ -27,6 +27,8 @@ public class Seed implements CommandLineRunner {
     private TipRepository tipRepository;
     @Autowired
     private DescriptionRepository descriptionRepository;
+    @Autowired
+    private AchievementRepository achievementRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -231,5 +233,64 @@ public class Seed implements CommandLineRunner {
         descriptionRepository.saveAll(Arrays.asList(description1, description2, description3, description4, description5, description6,
                                                     description7, description8,  description9, description10, description11, description12,
                                                     description13, description14));
+
+        Achievement achievement1 = Achievement.builder()
+                .name("Machu Picchu")
+                .description("You visited Machu Picchu!")
+                .imageLink("https://hjjvsmpqvznxkydtrqzo.supabase.co/storage/v1/object/public/destinies/Machu-Picchu.jpg")
+                .destination(destination1)
+                .build();
+        System.out.println(achievement1);
+        Achievement achievement2 = Achievement.builder()
+                .name("Mount Everest")
+                .description("You visited Mount Everest!")
+                .imageLink("https://hjjvsmpqvznxkydtrqzo.supabase.co/storage/v1/object/public/destinies/Mount-Everest.jpg")
+                .destination(destination2)
+                .build();
+        Achievement achievement3 = Achievement.builder()
+                .name("Paris")
+                .description("You visited Paris!")
+                .imageLink("https://hjjvsmpqvznxkydtrqzo.supabase.co/storage/v1/object/public/destinies/Paris.jpg")
+                .destination(destination3)
+                .build();
+        Achievement achievement4 = Achievement.builder()
+                .name("Rio de Janeiro")
+                .description("You visited Rio de Janeiro!")
+                .imageLink("https://hjjvsmpqvznxkydtrqzo.supabase.co/storage/v1/object/public/destinies/Rio-de-Janeiro.jpg")
+                .destination(destination4)
+                .build();
+        Achievement achievement5 = Achievement.builder()
+                .name("Rome")
+                .description("You visited Rome!")
+                .imageLink("https://hjjvsmpqvznxkydtrqzo.supabase.co/storage/v1/object/public/destinies/Rome.jpg")
+                .destination(destination5)
+                .build();
+        Achievement achievement6 = Achievement.builder()
+                .name("Bali")
+                .description("You visited Bali!")
+                .imageLink("https://hjjvsmpqvznxkydtrqzo.supabase.co/storage/v1/object/public/destinies/Bali.jpeg")
+                .destination(destination6)
+                .build();
+        Achievement achievement7 = Achievement.builder()
+                .name("Beginner Traveler")
+                .description("You visited 3 destinations!")
+                .imageLink("https://hjjvsmpqvznxkydtrqzo.supabase.co/storage/v1/object/public/achievements/beginner.jpg")
+                .count(3)
+                .build();
+        Achievement achievement8 = Achievement.builder()
+                .name("Intermediate Traveler")
+                .description("You visited 5 destinations!")
+                .imageLink("https://hjjvsmpqvznxkydtrqzo.supabase.co/storage/v1/object/public/achievements/intermidiate.jpg")
+                .count(5)
+                .build();
+        Achievement achievement9 = Achievement.builder()
+                .name("Experient Traveler")
+                .description("You visited 10 destinations!")
+                .imageLink("https://hjjvsmpqvznxkydtrqzo.supabase.co/storage/v1/object/public/achievements/experient.jpg")
+                .count(10)
+                .build();
+
+        achievementRepository.saveAll(Arrays.asList(achievement1, achievement2, achievement3, achievement4, achievement5,
+                                                    achievement6, achievement7, achievement8, achievement9));
     }
 }

@@ -1,5 +1,6 @@
 package br.net.traveler.traveler.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,11 +31,17 @@ public class Destination {
     @MapsId
     Localization localization;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "destination",  cascade = CascadeType.ALL)
     List<Tip> tips = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "destination",  cascade = CascadeType.ALL)
     List<Description> descriptions = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "destination", cascade = CascadeType.ALL)
+    Achievement achievement;
 
     public Destination(Integer id, String name, String imageLink, Country country, Localization localization){
         this.id = id;

@@ -1,5 +1,6 @@
 package br.net.traveler.traveler.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,6 +25,7 @@ public class Country {
     @JoinColumn(name = "continentId")
     Continent continent;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "country",  cascade = CascadeType.ALL)
     List<Destination> destinations = new ArrayList<>();
 
