@@ -4,6 +4,9 @@ package br.net.traveler.traveler.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 @Getter
@@ -28,4 +31,7 @@ public class User {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "titleId")
     Title title;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    List<Travel> travels = new ArrayList<>();
 }

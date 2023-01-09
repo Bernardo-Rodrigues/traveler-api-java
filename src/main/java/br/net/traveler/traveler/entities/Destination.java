@@ -43,6 +43,10 @@ public class Destination {
     @OneToOne(mappedBy = "destination", cascade = CascadeType.ALL)
     Achievement achievement;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "destination", cascade = CascadeType.ALL)
+    List<Travel> travels = new ArrayList<>();
+
     public Destination(Integer id, String name, String imageLink, Country country, Localization localization){
         this.id = id;
         this.name = name;
