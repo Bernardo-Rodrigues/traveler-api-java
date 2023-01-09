@@ -41,4 +41,7 @@ public class User {
     @OneToMany(mappedBy = "id.user", cascade = CascadeType.ALL)
     List<Favorite> favorites = new ArrayList<>();
 
+    @OneToMany(mappedBy = "id.user", cascade = CascadeType.ALL)
+    List<AchievementUser> achievements = new ArrayList<>();
+
 }

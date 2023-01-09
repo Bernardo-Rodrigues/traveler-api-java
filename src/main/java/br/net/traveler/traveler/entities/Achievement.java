@@ -29,4 +29,7 @@ public class Achievement {
     @JoinColumn(name = "destinationId")
     Destination destination;
 
+    @OneToMany(mappedBy = "id.achievement", cascade = CascadeType.ALL)
+    List<AchievementUser> achievements = new ArrayList<>();
+
 }
