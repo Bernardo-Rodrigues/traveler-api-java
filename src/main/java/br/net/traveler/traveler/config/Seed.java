@@ -29,11 +29,11 @@ public class Seed implements CommandLineRunner {
     private DescriptionRepository descriptionRepository;
     @Autowired
     private AchievementRepository achievementRepository;
+    @Autowired
+    private AvatarRepository avatarRepository;
 
     @Override
     public void run(String... args) throws Exception {
-
-
         Continent continent1 = Continent.builder().name("South America").build();
         Continent continent2 = Continent.builder().name("North America").build();
         Continent continent3 = Continent.builder().name("Europe").build();
@@ -41,8 +41,6 @@ public class Seed implements CommandLineRunner {
         Continent continent5 = Continent.builder().name("Asia").build();
         Continent continent6 = Continent.builder().name("Oceania").build();
         Continent continent7 = Continent.builder().name("Antarctica").build();
-
-        continentRepository.saveAll(Arrays.asList(continent2, continent4, continent6, continent7));
 
         Country country1 = Country.builder().name("Peru").continent(continent1).build();
         Country country2 = Country.builder().name("Nepal").continent(continent5).build();
@@ -292,5 +290,36 @@ public class Seed implements CommandLineRunner {
 
         achievementRepository.saveAll(Arrays.asList(achievement1, achievement2, achievement3, achievement4, achievement5,
                                                     achievement6, achievement7, achievement8, achievement9));
+
+        Avatar avatar1 = Avatar.builder()
+                .imageLink("https://hjjvsmpqvznxkydtrqzo.supabase.co/storage/v1/object/public/avatars/Boy-1")
+                .build();
+        Avatar avatar2 = Avatar.builder()
+                .imageLink("https://hjjvsmpqvznxkydtrqzo.supabase.co/storage/v1/object/public/avatars/Boy-2")
+                .build();
+        Avatar avatar3 = Avatar.builder()
+                .imageLink("https://hjjvsmpqvznxkydtrqzo.supabase.co/storage/v1/object/public/avatars/Boy-3")
+                .build();
+        Avatar avatar4 = Avatar.builder()
+                .imageLink("https://hjjvsmpqvznxkydtrqzo.supabase.co/storage/v1/object/public/avatars/Girl-1")
+                .build();
+        Avatar avatar5 = Avatar.builder()
+                .imageLink("https://hjjvsmpqvznxkydtrqzo.supabase.co/storage/v1/object/public/avatars/Girl-2")
+                .build();
+        Avatar avatar6 = Avatar.builder()
+                .imageLink("https://hjjvsmpqvznxkydtrqzo.supabase.co/storage/v1/object/public/avatars/Girl-3")
+                .build();
+        Avatar avatar7 = Avatar.builder()
+                .imageLink("https://hjjvsmpqvznxkydtrqzo.supabase.co/storage/v1/object/public/avatars/Boy-Traveler")
+                .tripsCount(3)
+                .build();
+        Avatar avatar8 = Avatar.builder()
+                .imageLink("https://hjjvsmpqvznxkydtrqzo.supabase.co/storage/v1/object/public/avatars/Girl-Traveler")
+                .tripsCount(3)
+                .build();
+
+        avatarRepository.saveAll(Arrays.asList(avatar1, avatar2, avatar3, avatar4, avatar5, avatar6, avatar7, avatar8));
+
+        continentRepository.saveAll(Arrays.asList(continent2, continent4, continent6, continent7));
     }
 }
