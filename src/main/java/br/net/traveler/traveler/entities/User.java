@@ -34,4 +34,8 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     List<Travel> travels = new ArrayList<>();
+
+    @OneToMany(mappedBy = "id.user", cascade = CascadeType.ALL)
+    List<Review> reviews = new ArrayList<>();
+
 }
