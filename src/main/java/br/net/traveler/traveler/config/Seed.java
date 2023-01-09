@@ -31,6 +31,8 @@ public class Seed implements CommandLineRunner {
     private AchievementRepository achievementRepository;
     @Autowired
     private AvatarRepository avatarRepository;
+    @Autowired
+    private TitleRepository titleRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -319,6 +321,24 @@ public class Seed implements CommandLineRunner {
                 .build();
 
         avatarRepository.saveAll(Arrays.asList(avatar1, avatar2, avatar3, avatar4, avatar5, avatar6, avatar7, avatar8));
+
+        Title title1 = Title.builder()
+                .text("Curious")
+                .build();
+        Title title2 = Title.builder()
+                .text("Beginner Traveler")
+                .tripsCount(3)
+                .build();
+        Title title3 = Title.builder()
+                .text("Intermediate Traveler")
+                .tripsCount(5)
+                .build();
+        Title title4 = Title.builder()
+                .text("Experient Traveler")
+                .tripsCount(10)
+                .build();
+
+        titleRepository.saveAll(Arrays.asList(title1, title2, title3, title4));
 
         continentRepository.saveAll(Arrays.asList(continent2, continent4, continent6, continent7));
     }

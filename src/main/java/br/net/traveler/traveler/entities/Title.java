@@ -7,22 +7,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "avatars")
+@Table(name = "titles")
 @Getter
 @Setter
-@ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Avatar {
+public class Title {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    String imageLink;
+    String text;
     Integer tripsCount;
 
-    @OneToMany(mappedBy = "avatar", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "title", cascade = CascadeType.ALL)
     List<User> users = new ArrayList<>();
 }
