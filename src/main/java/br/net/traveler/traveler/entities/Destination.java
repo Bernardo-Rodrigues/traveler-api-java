@@ -51,6 +51,9 @@ public class Destination {
     @OneToMany(mappedBy = "id.destination", cascade = CascadeType.ALL)
     List<Review> reviews = new ArrayList<>();
 
+    @OneToMany(mappedBy = "id.destination", cascade = CascadeType.ALL)
+    List<Favorite> favorites = new ArrayList<>();
+
     public Destination(Integer id, String name, String imageLink, Country country, Localization localization){
         this.id = id;
         this.name = name;
