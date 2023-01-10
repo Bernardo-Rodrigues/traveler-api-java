@@ -11,16 +11,16 @@ public class Travel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    private Integer id;
 
-    Date startDate;
-    Date endDate;
+    private Date startDate;
+    private Date endDate;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "userId")
-    User user;
+    private User user;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "destinationId")
-    Destination destination;
+    private Destination destination;
 }

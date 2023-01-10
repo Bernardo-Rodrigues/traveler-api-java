@@ -1,5 +1,6 @@
 package br.net.traveler.traveler.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,18 +19,22 @@ public class Achievement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    private Integer id;
 
-    String name;
-    String description;
-    String imageLink;
-    Integer count;
+    private String name;
+    private String description;
+    private String imageLink;
 
+    @Column(unique = true)
+    private Integer count;
+
+    @JsonIgnore
     @OneToOne
-    @JoinColumn(name = "destinationId")
-    Destination destination;
+    @JoinColumn(name = "destinationId", unique = true)
+    private Destination destination;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "id.achievement", cascade = CascadeType.ALL)
-    List<AchievementUser> achievements = new ArrayList<>();
+    private List<AchievementUser> achievements = new ArrayList<>();
 
 }

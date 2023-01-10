@@ -18,5 +18,6 @@ import lombok.*;
 public class Favorite {
 
     @EmbeddedId
-    FavoritePk id;
+    private FavoritePk id;
+
 }

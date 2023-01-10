@@ -18,16 +18,13 @@ public class Continent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
-    String name;
+    private Integer id;
+
+    @Column(unique = true)
+    private String name;
 
     @JsonIgnore
     @OneToMany(mappedBy = "continent",  cascade = CascadeType.ALL)
-    List<Country> countries = new ArrayList<>();
-
-    public Continent(Integer id, String name){
-        this.id = id;
-        this.name = name;
-    }
+    private List<Country> countries = new ArrayList<>();
 
 }

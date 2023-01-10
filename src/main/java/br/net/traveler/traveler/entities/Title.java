@@ -1,5 +1,6 @@
 package br.net.traveler.traveler.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,11 +18,15 @@ public class Title {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    private Integer id;
 
-    String text;
-    Integer tripsCount;
+    @Column(unique = true)
+    private String text;
 
+    private Integer tripsCount;
+
+    @JsonIgnore
     @OneToMany(mappedBy = "title", cascade = CascadeType.ALL)
-    List<User> users = new ArrayList<>();
+    private List<User> users = new ArrayList<>();
+
 }

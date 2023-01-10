@@ -1,6 +1,7 @@
 package br.net.traveler.traveler.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,30 +19,38 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    private Integer id;
 
-    String username;
-    String email;
-    String password;
+    @Column(unique = true)
+    private String username;
+
+    @Column(unique = true)
+    private String email;
+
+    private String password;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "avatarId")
-    Avatar avatar;
+    private Avatar avatar;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "titleId")
-    Title title;
+    @JoinColumn(name = "titleId", columnDefinition = "integer default 1")
+    private Title title;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    List<Travel> travels = new ArrayList<>();
+    private List<Travel> travels = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "id.user", cascade = CascadeType.ALL)
-    List<Review> reviews = new ArrayList<>();
+    private List<Review> reviews = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "id.user", cascade = CascadeType.ALL)
-    List<Favorite> favorites = new ArrayList<>();
+    private List<Favorite> favorites = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "id.user", cascade = CascadeType.ALL)
-    List<AchievementUser> achievements = new ArrayList<>();
+    private List<AchievementUser> achievements = new ArrayList<>();
 
 }

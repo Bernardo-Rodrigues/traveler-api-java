@@ -14,14 +14,15 @@ public class Description {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    private Integer id;
 
     @Column(columnDefinition = "text")
-    String text;
+    private String text;
 
-    String type;
+    private String type;
 
     @ManyToOne
     @JoinColumn(name = "destinationId")
-    Destination destination;
+    private Destination destination;
+
 }

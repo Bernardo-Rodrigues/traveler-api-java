@@ -14,12 +14,12 @@ public class Tip {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    private Integer id;
 
     @Column(columnDefinition = "text")
-    String description;
+    private String description;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "destinationId")
-    Destination destination;
+    private Destination destination;
 }

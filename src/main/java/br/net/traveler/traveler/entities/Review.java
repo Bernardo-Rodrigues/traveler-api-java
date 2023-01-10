@@ -15,8 +15,8 @@ import lombok.*;
 public class Review {
 
     @EmbeddedId
-    ReviewsPk id;
+    private ReviewsPk id;
 
-    Integer note;
+    private Integer note;
 
 }

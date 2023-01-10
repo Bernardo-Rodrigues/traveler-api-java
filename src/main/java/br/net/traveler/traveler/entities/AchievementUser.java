@@ -17,5 +17,6 @@ import lombok.*;
 public class AchievementUser {
 
     @EmbeddedId
-    AchievementUserPk id;
+    private AchievementUserPk id;
+
 }

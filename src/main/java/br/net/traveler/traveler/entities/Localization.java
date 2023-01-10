@@ -15,18 +15,12 @@ public class Localization {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
-    String lat;
-    String lng;
+    private Integer id;
+    private String lat;
+    private String lng;
 
     @JsonIgnore
     @OneToOne(mappedBy = "localization", cascade = CascadeType.ALL)
-    Destination destination;
-
-    public Localization(Integer id, String lat, String lng){
-        this.id = id;
-        this.lat = lat;
-        this.lng = lng;
-    }
+    private Destination destination;
 
 }
