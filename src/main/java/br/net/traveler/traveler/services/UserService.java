@@ -5,4 +5,5 @@ import br.net.traveler.traveler.entities.User;
 public interface UserService {
 
     void createUser(User user);
+    void identifyUser(User user);
 }
