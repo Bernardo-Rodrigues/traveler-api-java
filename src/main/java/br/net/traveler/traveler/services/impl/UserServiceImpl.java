@@ -1,8 +1,12 @@
 package br.net.traveler.traveler.services.impl;
 
+import br.net.traveler.traveler.domain.dto.UserDto;
 import br.net.traveler.traveler.domain.exception.ConflictException;
 import br.net.traveler.traveler.domain.exception.UnauthorizedException;
-import br.net.traveler.traveler.entities.User;
+import br.net.traveler.traveler.domain.mapper.UserMapper;
+import br.net.traveler.traveler.domain.response.UserAuthenticationResponse;
+import br.net.traveler.traveler.domain.response.UserRegistrationResponse;
+import br.net.traveler.traveler.domain.entities.User;
 import br.net.traveler.traveler.repositories.UserRepository;
 import br.net.traveler.traveler.services.CryptographyService;
 import br.net.traveler.traveler.services.UserService;
@@ -13,33 +17,39 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    CryptographyService cryptographyService;
+    private CryptographyService cryptographyService;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
-    public void createUser(User user) {
-        User userWithSameName = userRepository.findByUsername(user.getUsername());
+    public UserDto createUser(UserDto dto) {
+        User userWithSameName = userRepository.findByUsername(dto.getUsername());
 
         if(userWithSameName != null) {
             throw new ConflictException("User already registered", "409");
         }
 
-        User userWithSameEmail = userRepository.findByEmail(user.getEmail());
+        User userWithSameEmail = userRepository.findByEmail(dto.getEmail());
 
         if(userWithSameEmail != null) {
             throw new ConflictException("User already registered", "409");
         }
 
-        String encryptedPassword = cryptographyService.encrypt(user.getPassword());
-        user.setPassword(encryptedPassword);
+        String encryptedPassword = cryptographyService.encrypt(dto.getPassword());
+        dto.setPassword(encryptedPassword);
 
-        userRepository.save(user);
+        User user = userRepository.save(userMapper.dtoToEntity(dto));
+
+        System.out.println(user);
+        return userMapper.entityToDto(user);
     }
 
     @Override
-    public void identifyUser(User user) {
+    public String identifyUser(UserDto user) {
         User registeredUser = userRepository.findByEmail(user.getEmail());
 
         if (registeredUser == null ||
@@ -47,5 +57,7 @@ public class UserServiceImpl implements UserService {
         ) {
             throw new UnauthorizedException("Credentials are incorrect", "401");
         }
+
+        return "";
     }
 }

@@ -1,12 +1,11 @@
-package br.net.traveler.traveler.entities.pk;
+package br.net.traveler.traveler.domain.entities.pk;
 
-import br.net.traveler.traveler.entities.Destination;
-import br.net.traveler.traveler.entities.User;
+import br.net.traveler.traveler.domain.entities.Destination;
+import br.net.traveler.traveler.domain.entities.User;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.*;
-
 
 @Embeddable
 @Getter
@@ -15,7 +14,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FavoritePk {
+public class ReviewsPk {
 
     @ManyToOne
     @JoinColumn(name = "userId")

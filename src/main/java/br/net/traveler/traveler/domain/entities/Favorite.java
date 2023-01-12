@@ -1,7 +1,6 @@
-package br.net.traveler.traveler.entities;
+package br.net.traveler.traveler.domain.entities;
 
-import br.net.traveler.traveler.entities.pk.FavoritePk;
-import br.net.traveler.traveler.entities.pk.ReviewsPk;
+import br.net.traveler.traveler.domain.entities.pk.FavoritePk;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

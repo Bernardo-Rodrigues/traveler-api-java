@@ -1,7 +1,6 @@
 package br.net.traveler.traveler.config;
 
-import br.net.traveler.traveler.entities.*;
-import br.net.traveler.traveler.entities.pk.ReviewsPk;
+import br.net.traveler.traveler.domain.entities.*;
 import br.net.traveler.traveler.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;

@@ -1,9 +1,11 @@
 package br.net.traveler.traveler.services;
 
-import br.net.traveler.traveler.entities.User;
+import br.net.traveler.traveler.domain.dto.UserDto;
+import br.net.traveler.traveler.domain.response.UserAuthenticationResponse;
+import br.net.traveler.traveler.domain.response.UserRegistrationResponse;
 
 public interface UserService {
 
-    void createUser(User user);
-    void identifyUser(User user);
+    UserDto createUser(UserDto user);
+    String identifyUser(UserDto user);
 }

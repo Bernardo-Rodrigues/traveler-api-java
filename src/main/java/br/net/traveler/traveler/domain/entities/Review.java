@@ -1,6 +1,6 @@
-package br.net.traveler.traveler.entities;
+package br.net.traveler.traveler.domain.entities;
 
-import br.net.traveler.traveler.entities.pk.ReviewsPk;
+import br.net.traveler.traveler.domain.entities.pk.ReviewsPk;
 import jakarta.persistence.*;
 import lombok.*;
 

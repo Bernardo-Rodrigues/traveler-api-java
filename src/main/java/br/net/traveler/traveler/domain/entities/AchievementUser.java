@@ -1,6 +1,6 @@
-package br.net.traveler.traveler.entities;
+package br.net.traveler.traveler.domain.entities;
 
-import br.net.traveler.traveler.entities.pk.AchievementUserPk;
+import br.net.traveler.traveler.domain.entities.pk.AchievementUserPk;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

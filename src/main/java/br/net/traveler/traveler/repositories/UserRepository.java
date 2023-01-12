@@ -1,8 +1,7 @@
 package br.net.traveler.traveler.repositories;
 
-import br.net.traveler.traveler.entities.User;
+import br.net.traveler.traveler.domain.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
 

@@ -1,4 +1,4 @@
-package br.net.traveler.traveler.entities;
+package br.net.traveler.traveler.domain.entities;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

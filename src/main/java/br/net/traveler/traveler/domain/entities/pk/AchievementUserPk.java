@@ -1,7 +1,7 @@
-package br.net.traveler.traveler.entities.pk;
+package br.net.traveler.traveler.domain.entities.pk;
 
-import br.net.traveler.traveler.entities.Destination;
-import br.net.traveler.traveler.entities.User;
+import br.net.traveler.traveler.domain.entities.Achievement;
+import br.net.traveler.traveler.domain.entities.User;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -14,13 +14,13 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReviewsPk {
+public class AchievementUserPk {
 
     @ManyToOne
     @JoinColumn(name = "userId")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "destinationId")
-    private Destination destination;
+    @JoinColumn(name = "achievementId")
+    private Achievement achievement;
 }
