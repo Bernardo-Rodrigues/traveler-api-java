@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ConflictException.class)
-    public ResponseEntity<StandardException> conflict(UnauthorizedException e, HttpServletRequest request) {
+    public ResponseEntity<StandardException> conflict(ConflictException e, HttpServletRequest request) {
         String error = "Information already exists";
         HttpStatus status = HttpStatus.CONFLICT;
         StandardException err = new StandardException(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(CryptographyException.class)
-    public ResponseEntity<StandardException> cryptography(UnauthorizedException e, HttpServletRequest request) {
+    public ResponseEntity<StandardException> cryptography(CryptographyException e, HttpServletRequest request) {
         String error = "Error in cryptography";
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
         StandardException err = new StandardException(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
@@ -33,7 +33,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<StandardException> unauthorizedAccess(UnauthorizedException e, HttpServletRequest request) {
-        System.out.println("opa");
         String error = "Unauthorized access";
         HttpStatus status = HttpStatus.UNAUTHORIZED;
         StandardException err = new StandardException(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());

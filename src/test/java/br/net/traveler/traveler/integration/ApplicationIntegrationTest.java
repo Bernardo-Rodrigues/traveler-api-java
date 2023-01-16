@@ -3,13 +3,12 @@ package br.net.traveler.traveler.integration;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import br.net.traveler.traveler.controllers.UserController;
+
 import br.net.traveler.traveler.domain.dto.UserDto;
 import br.net.traveler.traveler.domain.mapper.UserMapper;
 import br.net.traveler.traveler.domain.mother.UserMother;
 import br.net.traveler.traveler.domain.request.UserAuthenticationRequest;
 import br.net.traveler.traveler.domain.request.UserRegistrationRequest;
-import br.net.traveler.traveler.domain.response.UserAuthenticationResponse;
 import br.net.traveler.traveler.repositories.UserRepository;
 import br.net.traveler.traveler.services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,21 +18,17 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.web.reactive.server.MockServerClientHttpResponse;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 public class ApplicationIntegrationTest implements WithAssertions {
 
     private static final String CONTROLLER_BASE_URL = "/users";
-    private static final String USER_REGISTRATION_URL = CONTROLLER_BASE_URL + "/register";
-    private static final String USER_AUTHENTICATION_URL = CONTROLLER_BASE_URL + "/authenticate";
+    private static final String CREATE_USER_URL = CONTROLLER_BASE_URL;
+    private static final String AUTHENTICATE_USER_URL = CONTROLLER_BASE_URL + "/authenticate";
 
     @Autowired
     private MockMvc mvc;
@@ -57,12 +52,15 @@ public class ApplicationIntegrationTest implements WithAssertions {
         UserRegistrationRequest request = UserMother.getUserRegistrationRequest();
         UserDto user = userMapper.registrationRequestToDto(request);
 
-        mvc.perform(
-           post(USER_REGISTRATION_URL)
+        MockHttpServletResponse response = mvc.perform(
+           post(CREATE_USER_URL)
              .content(new ObjectMapper().writeValueAsString(request).getBytes())
              .accept(MediaType.APPLICATION_JSON)
              .contentType(MediaType.APPLICATION_JSON_VALUE))
-           .andExpect(status().isCreated());
+           .andExpect(status().isCreated())
+           .andReturn().getResponse();
+
+        assertThat(response.getContentAsString()).contains("uri");
 
         UserDto createdUser = userMapper.entityToDto(userRepository.findByEmail(user.getEmail()));
 
@@ -79,7 +77,7 @@ public class ApplicationIntegrationTest implements WithAssertions {
         userService.createUser(user);
 
         MockHttpServletResponse response = mvc.perform(
-           post(USER_AUTHENTICATION_URL)
+           post(AUTHENTICATE_USER_URL)
                    .content(new ObjectMapper().writeValueAsString(request).getBytes())
                    .accept(MediaType.APPLICATION_JSON)
                    .contentType(MediaType.APPLICATION_JSON_VALUE))

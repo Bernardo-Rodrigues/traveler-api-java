@@ -27,15 +27,14 @@ public class UserController {
     @Autowired
     UserMapper userMapper;
 
-    @PostMapping("/register")
-    public ResponseEntity<Void> registerUser(
+    @PostMapping
+    public ResponseEntity<UserRegistrationResponse> createUser(
             @RequestBody UserRegistrationRequest requestBody
     ){
-        System.out.println("aqui");
         UserDto dto = userService.createUser(userMapper.registrationRequestToDto(requestBody));
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(dto.getId()).toUri();
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.created(uri).body(UserRegistrationResponse.builder().uri(uri).build());
     }
 
     @PostMapping("/authenticate")
