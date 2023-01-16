@@ -7,5 +7,5 @@ import br.net.traveler.traveler.domain.response.UserRegistrationResponse;
 public interface UserService {
 
     UserDto createUser(UserDto user);
-    String identifyUser(UserDto user);
+    UserDto identifyUser(UserDto user);
 }

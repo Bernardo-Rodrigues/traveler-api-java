@@ -33,6 +33,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<StandardException> unauthorizedAccess(UnauthorizedException e, HttpServletRequest request) {
+        System.out.println("opa");
         String error = "Unauthorized access";
         HttpStatus status = HttpStatus.UNAUTHORIZED;
         StandardException err = new StandardException(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());

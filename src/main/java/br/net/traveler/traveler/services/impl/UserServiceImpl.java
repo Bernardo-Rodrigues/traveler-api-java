@@ -4,8 +4,6 @@ import br.net.traveler.traveler.domain.dto.UserDto;
 import br.net.traveler.traveler.domain.exception.ConflictException;
 import br.net.traveler.traveler.domain.exception.UnauthorizedException;
 import br.net.traveler.traveler.domain.mapper.UserMapper;
-import br.net.traveler.traveler.domain.response.UserAuthenticationResponse;
-import br.net.traveler.traveler.domain.response.UserRegistrationResponse;
 import br.net.traveler.traveler.domain.entities.User;
 import br.net.traveler.traveler.repositories.UserRepository;
 import br.net.traveler.traveler.services.CryptographyService;
@@ -49,7 +47,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String identifyUser(UserDto user) {
+    public UserDto identifyUser(UserDto user) {
         User registeredUser = userRepository.findByEmail(user.getEmail());
 
         if (registeredUser == null ||
@@ -58,6 +56,6 @@ public class UserServiceImpl implements UserService {
             throw new UnauthorizedException("Credentials are incorrect", "401");
         }
 
-        return "";
+        return userMapper.entityToDto(registeredUser);
     }
 }
