@@ -4,11 +4,11 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Getter
-public class ConflictException extends RuntimeException {
+public class NotFoundException extends RuntimeException {
 
-    HttpStatus status = HttpStatus.CONFLICT;
+    HttpStatus status = HttpStatus.NOT_FOUND;
 
-    public ConflictException(String reason) {
+    public NotFoundException(String reason) {
         super(reason);
     }
 

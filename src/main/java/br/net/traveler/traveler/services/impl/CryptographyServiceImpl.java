@@ -32,7 +32,7 @@ public class CryptographyServiceImpl implements CryptographyService {
             byte[] iv = ivParameterSpec.getIV();
             return base64Encode(iv) + ":" + base64Encode(cryptoText);
         } catch (Exception e){
-            throw new CryptographyException("Error encrypting password", "500");
+            throw new CryptographyException("Error encrypting password");
         }
     }
 
@@ -46,7 +46,7 @@ public class CryptographyServiceImpl implements CryptographyService {
             pbeCipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(base64Decode(iv)));
             return new String(pbeCipher.doFinal(base64Decode(property)), "UTF-8");
         } catch (Exception e){
-            throw new CryptographyException("Error decrypting password", "500");
+            throw new CryptographyException("Error decrypting password");
         }
     }
 

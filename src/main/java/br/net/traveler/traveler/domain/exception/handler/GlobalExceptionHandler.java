@@ -2,40 +2,40 @@ package br.net.traveler.traveler.domain.exception.handler;
 
 import java.time.Instant;
 
-import br.net.traveler.traveler.domain.exception.ConflictException;
-import br.net.traveler.traveler.domain.exception.CryptographyException;
-import br.net.traveler.traveler.domain.exception.StandardException;
-import org.springframework.http.HttpStatus;
+import br.net.traveler.traveler.domain.exception.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import jakarta.servlet.http.HttpServletRequest;
-import br.net.traveler.traveler.domain.exception.UnauthorizedException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ConflictException.class)
-    public ResponseEntity<StandardException> conflict(ConflictException e, HttpServletRequest request) {
+    public ResponseEntity<StandardError> conflict(ConflictException e, HttpServletRequest request) {
         String error = "Information already exists";
-        HttpStatus status = HttpStatus.CONFLICT;
-        StandardException err = new StandardException(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
-        return ResponseEntity.status(status).body(err);
+        StandardError err = new StandardError(Instant.now(), e.getStatus().value(), error, e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(e.getStatus()).body(err);
     }
 
     @ExceptionHandler(CryptographyException.class)
-    public ResponseEntity<StandardException> cryptography(CryptographyException e, HttpServletRequest request) {
+    public ResponseEntity<StandardError> cryptography(CryptographyException e, HttpServletRequest request) {
         String error = "Error in cryptography";
-        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
-        StandardException err = new StandardException(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
-        return ResponseEntity.status(status).body(err);
+        StandardError err = new StandardError(Instant.now(), e.getStatus().value(), error, e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(e.getStatus()).body(err);
     }
 
     @ExceptionHandler(UnauthorizedException.class)
-    public ResponseEntity<StandardException> unauthorizedAccess(UnauthorizedException e, HttpServletRequest request) {
+    public ResponseEntity<StandardError> unauthorizedAccess(UnauthorizedException e, HttpServletRequest request) {
         String error = "Unauthorized access";
-        HttpStatus status = HttpStatus.UNAUTHORIZED;
-        StandardException err = new StandardException(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
-        return ResponseEntity.status(status).body(err);
+        StandardError err = new StandardError(Instant.now(), e.getStatus().value(), error, e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(e.getStatus()).body(err);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<StandardError> notFound(NotFoundException e, HttpServletRequest request) {
+        String error = "Entity not found";
+        StandardError err = new StandardError(Instant.now(), e.getStatus().value(), error, e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(e.getStatus()).body(err);
     }
 }
