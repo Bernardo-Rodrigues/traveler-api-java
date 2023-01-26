@@ -1,6 +1,7 @@
 package br.net.traveler.traveler.controllers;
 
 import br.net.traveler.traveler.domain.dto.DestinationDto;
+import br.net.traveler.traveler.domain.dto.DestinationWithScoreDto;
 import br.net.traveler.traveler.domain.response.DestinationListResponse;
 import br.net.traveler.traveler.services.DestinationService;
 import com.azure.core.annotation.QueryParam;
@@ -22,6 +23,12 @@ public class DestinationController {
     @GetMapping
     public ResponseEntity<List<DestinationDto>> list (@QueryParam("name") String name){
         List<DestinationDto> dtos = service.list(name);
+        return ResponseEntity.ok().body(dtos);
+    }
+
+    @GetMapping("/top")
+    public ResponseEntity<List<DestinationWithScoreDto>> listTop (@QueryParam("continentName") String continentName){
+        List<DestinationWithScoreDto> dtos = service.listTop(continentName);
         return ResponseEntity.ok().body(dtos);
     }
 }

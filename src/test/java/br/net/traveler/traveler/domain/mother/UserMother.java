@@ -50,15 +50,15 @@ public class UserMother {
 
     public static UserAuthenticationRequest getUserAuthenticationRequest(){
         return UserAuthenticationRequest.builder()
-                .email("email@email.com")
-                .password("password")
+                .email("email1@email.com")
+                .password("password1")
                 .build();
     }
 
     public static UserUpdateRequest getUserUpdateRequest(){
         return UserUpdateRequest.builder()
                 .username("updated username")
-                .email("email@email.com")
+                .email("updatedemail@email.com")
                 .password("password")
                 .build();
     }

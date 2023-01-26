@@ -5,24 +5,21 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import br.net.traveler.traveler.config.SeedTest;
 import br.net.traveler.traveler.domain.dto.UserDto;
-import br.net.traveler.traveler.domain.entities.Continent;
-import br.net.traveler.traveler.domain.entities.Country;
-import br.net.traveler.traveler.domain.entities.Destination;
-import br.net.traveler.traveler.domain.entities.Localization;
+import br.net.traveler.traveler.domain.entities.*;
+import br.net.traveler.traveler.domain.entities.pk.ReviewsPk;
 import br.net.traveler.traveler.domain.mapper.UserMapper;
 import br.net.traveler.traveler.domain.mother.DestinationMother;
 import br.net.traveler.traveler.domain.mother.UserMother;
 import br.net.traveler.traveler.domain.request.UserAuthenticationRequest;
 import br.net.traveler.traveler.domain.request.UserRegistrationRequest;
 import br.net.traveler.traveler.domain.request.UserUpdateRequest;
-import br.net.traveler.traveler.repositories.ContinentRepository;
-import br.net.traveler.traveler.repositories.CountryRepository;
-import br.net.traveler.traveler.repositories.DestinationRepository;
-import br.net.traveler.traveler.repositories.UserRepository;
+import br.net.traveler.traveler.repositories.*;
 import br.net.traveler.traveler.services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.api.WithAssertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,36 +34,31 @@ import java.util.Arrays;
 @SpringBootTest
 @AutoConfigureMockMvc
 public class ApplicationIntegrationTest implements WithAssertions {
+
+    private static final String USER_CONTROLLER_BASE_URL = "/users";
+    private static final String DESTINATION_CONTROLLER_BASE_URL = "/destinations";
+    private static final String AUTHENTICATE_USER_URL = USER_CONTROLLER_BASE_URL + "/authenticate";
+    private static final String TOP_DESTINATIONS_URL = DESTINATION_CONTROLLER_BASE_URL + "/top";
+
+    @Autowired
+    private MockMvc mvc;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private LocalizationRepository localizationRepository;
+    @Autowired
+    private ReviewRepository reviewRepository;
     @Autowired
     private ContinentRepository continentRepository;
     @Autowired
     private CountryRepository countryRepository;
     @Autowired
     private DestinationRepository destinationRepository;
-
-    private static final String USER_CONTROLLER_BASE_URL = "/users";
-    private static final String DESTINATION_CONTROLLER_BASE_URL = "/destinations";
-    private static final String AUTHENTICATE_USER_URL = USER_CONTROLLER_BASE_URL + "/authenticate";
-
-    @Autowired
-    private MockMvc mvc;
-
-    @Autowired
-    private UserService userService;
-
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private UserMapper userMapper;
-
-    @BeforeEach
-    public void truncateDatabase(){
-        userRepository.deleteAll();
-        destinationRepository.deleteAll();
-        countryRepository.deleteAll();
-        continentRepository.deleteAll();
-    }
+    private SeedTest seed = new SeedTest();
 
     @Test
     void givenANewUserWhenInformationAreOkThenCreateTheUser() throws Exception {
@@ -87,8 +79,7 @@ public class ApplicationIntegrationTest implements WithAssertions {
 
     @Test
     void givenACorrectIdWhenSearchingForAnUserThenReturnTheUser() throws Exception {
-        UserDto user = UserMother.getUserDto();
-        user = userService.createUser(user);
+        User user = userRepository.findById(1).get();
 
         MockHttpServletResponse response = mvc.perform(
                         get(USER_CONTROLLER_BASE_URL + "/" + user.getId())
@@ -97,13 +88,12 @@ public class ApplicationIntegrationTest implements WithAssertions {
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
 
-        assertThat(response.getContentAsString()).contains("id", "username", "email", "password");
+        assertThat(response.getContentAsString()).contains(user.getId().toString(), user.getUsername(), user.getEmail(), user.getPassword());
     }
 
     @Test
     void givenUserInformationWhenTheTheUserAlreadyExistsThenUpdateItsInformation() throws Exception {
-        UserDto user = UserMother.getUserDto();
-        UserDto createdUser = userService.createUser(user);
+        User createdUser = userRepository.findById(1).get();
         UserUpdateRequest request = UserMother.getUserUpdateRequest();
 
         MockHttpServletResponse response = mvc.perform(
@@ -121,8 +111,6 @@ public class ApplicationIntegrationTest implements WithAssertions {
     @Test
     void givenAnAuthenticationAttemptWhenInformationAreOkThenReturnAJwt() throws Exception {
         UserAuthenticationRequest request = UserMother.getUserAuthenticationRequest();
-        UserDto user = userMapper.authenticationRequestToDto(request);
-        userService.createUser(user);
 
         MockHttpServletResponse response = mvc.perform(
            post(AUTHENTICATE_USER_URL)
@@ -137,8 +125,6 @@ public class ApplicationIntegrationTest implements WithAssertions {
 
     @Test
     void givenAListDestinationsRequestWhenThereIsNoNameParameterThenReturnAllDestinations() throws Exception {
-        saveDestinations();
-
         MockHttpServletResponse response = mvc.perform(
                         get(DESTINATION_CONTROLLER_BASE_URL)
                                 .accept(MediaType.APPLICATION_JSON)
@@ -162,26 +148,16 @@ public class ApplicationIntegrationTest implements WithAssertions {
         assertThat(response.getContentAsString()).doesNotContain("Second Destination");
     }
 
-    private void saveDestinations(){
-        Continent continent = Continent.builder().name("Continent").build();
-        Country country = Country.builder().name("Country").continent(continent).build();
-        Localization loc1 = Localization.builder().lat("0").lng("0").build();
-        Localization loc2 = Localization.builder().lat("1").lng("1").build();
+    @Test
+    void givenAListTopDestinationsRequestWhenDestinationsHaveReviewsThenReturnAllDestinationsOrderedByScore() throws Exception {
+        MockHttpServletResponse response = mvc.perform(
+                        get(TOP_DESTINATIONS_URL)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
 
-        Destination destination1 = Destination.builder()
-                .name("First Destination")
-                .imageLink("First ImageLink")
-                .country(country)
-                .localization(loc1)
-                .build();
-
-        Destination destination2 = Destination.builder()
-                .name("Second Destination 2")
-                .imageLink("Second ImageLink 2")
-                .country(country)
-                .localization(loc2)
-                .build();
-
-        destinationRepository.saveAll(Arrays.asList(destination1, destination2));
+        assertThat(response.getContentAsString()).contains("score");
+        assertThat(response.getContentAsString().indexOf("4.0")).isLessThan(response.getContentAsString().indexOf("3.0"));
     }
 }
