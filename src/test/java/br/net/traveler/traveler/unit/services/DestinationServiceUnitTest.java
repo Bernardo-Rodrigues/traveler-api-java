@@ -1,10 +1,16 @@
 package br.net.traveler.traveler.unit.services;
 
 import br.net.traveler.traveler.domain.entities.Continent;
+import br.net.traveler.traveler.domain.entities.Destination;
+import br.net.traveler.traveler.domain.entities.User;
+import br.net.traveler.traveler.domain.exception.NotFoundException;
 import br.net.traveler.traveler.domain.mapper.DestinationMapper;
+import br.net.traveler.traveler.domain.mother.DestinationMother;
+import br.net.traveler.traveler.domain.mother.UserMother;
 import br.net.traveler.traveler.repositories.ContinentRepository;
 import br.net.traveler.traveler.repositories.DestinationRepository;
 import br.net.traveler.traveler.repositories.ReviewRepository;
+import br.net.traveler.traveler.repositories.UserRepository;
 import br.net.traveler.traveler.services.impl.DestinationServiceImpl;
 import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.Test;
@@ -14,6 +20,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -31,6 +38,8 @@ public class DestinationServiceUnitTest implements WithAssertions {
     private ReviewRepository reviewRepository;
     @Mock
     private DestinationMapper destinationMapper;
+    @Mock
+    private UserRepository userRepository;
 
     @Test
     void givenAListDestinationsAttemptWhenThereIsNoNameParameterThenCallListAll(){
@@ -54,5 +63,47 @@ public class DestinationServiceUnitTest implements WithAssertions {
         destinationService.listTop(continent.getName());
 
         verify(destinationRepository).findAllByContinent(continent.getName());
+    }
+
+    @Test
+    void givenAnAttemptToFavoriteADestinationWhenThereIsNoUserWithGivenIdThenThrowANotFoundException(){
+        User user = UserMother.getUser();
+        Destination destination = DestinationMother.getDestination();
+
+        given(userRepository.findById(user.getId())).willReturn(null);
+
+        assertThatThrownBy(() -> destinationService.favorite(user.getId(), destination.getId())).isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
+    void givenAnAttemptToFavoriteADestinationWhenThereIsNoDestinationWithGivenIdThenThrowANotFoundException(){
+        User user = UserMother.getUser();
+        Destination destination = DestinationMother.getDestination();
+
+        given(userRepository.findById(user.getId())).willReturn(Optional.of(user));
+        given(destinationRepository.findById(destination.getId())).willReturn(null);
+
+        assertThatThrownBy(() -> destinationService.favorite(user.getId(), destination.getId())).isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
+    void givenAnAttemptToUnfavoriteADestinationWhenThereIsNoUserWithGivenIdThenThrowANotFoundException(){
+        User user = UserMother.getUser();
+        Destination destination = DestinationMother.getDestination();
+
+        given(userRepository.findById(user.getId())).willReturn(null);
+
+        assertThatThrownBy(() -> destinationService.unfavorite(user.getId(), destination.getId())).isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
+    void givenAnAttemptToUnfavoriteADestinationWhenThereIsNoDestinationWithGivenIdThenThrowANotFoundException(){
+        User user = UserMother.getUser();
+        Destination destination = DestinationMother.getDestination();
+
+        given(userRepository.findById(user.getId())).willReturn(Optional.of(user));
+        given(destinationRepository.findById(destination.getId())).willReturn(null);
+
+        assertThatThrownBy(() -> destinationService.unfavorite(user.getId(), destination.getId())).isInstanceOf(NotFoundException.class);
     }
 }

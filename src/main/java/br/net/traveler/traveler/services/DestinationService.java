@@ -9,4 +9,6 @@ public interface DestinationService {
 
     List<DestinationDto> list(String name);
     List<DestinationWithScoreDto> listTop(String continentName);
+    Void favorite(Integer userId, Integer destinationId);
+    Void unfavorite(Integer userId, Integer destinationId);
 }

@@ -7,9 +7,7 @@ import br.net.traveler.traveler.services.DestinationService;
 import com.azure.core.annotation.QueryParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,5 +28,23 @@ public class DestinationController {
     public ResponseEntity<List<DestinationWithScoreDto>> listTop (@QueryParam("continentName") String continentName){
         List<DestinationWithScoreDto> dtos = service.listTop(continentName);
         return ResponseEntity.ok().body(dtos);
+    }
+
+    @PostMapping("/{id}/favorite")
+    public ResponseEntity<Void> favorite(
+            @RequestHeader(value = "user-id") Integer userId,
+            @PathVariable(value = "id") Integer destinationId
+    ){
+        service.favorite(userId, destinationId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/unfavorite")
+    public ResponseEntity<Void> unfavorite(
+            @RequestHeader(value = "user-id") Integer userId,
+            @PathVariable(value = "id") Integer destinationId
+    ){
+        service.unfavorite(userId, destinationId);
+        return ResponseEntity.noContent().build();
     }
 }

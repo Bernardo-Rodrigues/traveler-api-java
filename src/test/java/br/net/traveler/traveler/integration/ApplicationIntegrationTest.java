@@ -37,6 +37,8 @@ public class ApplicationIntegrationTest implements WithAssertions {
 
     private static final String USER_CONTROLLER_BASE_URL = "/users";
     private static final String DESTINATION_CONTROLLER_BASE_URL = "/destinations";
+    private static final String FAVORITE_DESTINATION_URL = DESTINATION_CONTROLLER_BASE_URL + "/1/favorite";
+    private static final String UNFAVORITE_DESTINATION_URL = DESTINATION_CONTROLLER_BASE_URL + "/1/unfavorite";
     private static final String AUTHENTICATE_USER_URL = USER_CONTROLLER_BASE_URL + "/authenticate";
     private static final String TOP_DESTINATIONS_URL = DESTINATION_CONTROLLER_BASE_URL + "/top";
 
@@ -57,6 +59,8 @@ public class ApplicationIntegrationTest implements WithAssertions {
     @Autowired
     private UserRepository userRepository;
     @Autowired
+    private FavoriteRepository favoriteRepository;
+    @Autowired
     private UserMapper userMapper;
     private SeedTest seed = new SeedTest();
 
@@ -74,7 +78,7 @@ public class ApplicationIntegrationTest implements WithAssertions {
            .andReturn().getResponse();
 
         assertThat(response.getContentAsString()).contains("uri");
-        assertThatNoException().isThrownBy(() -> userRepository.findByEmail(user.getEmail()));
+        assertThat(userRepository.findByEmail(user.getEmail())).isNotNull();
     }
 
     @Test
@@ -159,5 +163,31 @@ public class ApplicationIntegrationTest implements WithAssertions {
 
         assertThat(response.getContentAsString()).contains("score");
         assertThat(response.getContentAsString().indexOf("4.0")).isLessThan(response.getContentAsString().indexOf("3.0"));
+    }
+
+    @Test
+    void givenADestinationWhenUserWantsToFavoriteItThenAddToTheDatabase() throws Exception {
+        MockHttpServletResponse response = mvc.perform(
+                        post(FAVORITE_DESTINATION_URL)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .header("user-id", 1)
+                                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isNoContent())
+                .andReturn().getResponse();
+
+        assertThat(favoriteRepository.findByUserAndDestination(1, 1)).isNotNull();
+    }
+
+    @Test
+    void givenADestinationWhenUserWantsToUnfavoriteItThenRemoveFromTheDatabase() throws Exception {
+        MockHttpServletResponse response = mvc.perform(
+                        post(UNFAVORITE_DESTINATION_URL)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .header("user-id", 1)
+                                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isNoContent())
+                .andReturn().getResponse();
+
+        assertThat(favoriteRepository.findByUserAndDestination(1, 1)).isNull();
     }
 }

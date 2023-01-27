@@ -9,5 +9,11 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor()
 public class DestinationMother {
-
+    public static Destination getDestination() {
+        return Destination.builder()
+                .id(1)
+                .name("destination")
+                .imageLink("imageLink")
+                .build();
+    }
 }

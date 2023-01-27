@@ -2,14 +2,13 @@ package br.net.traveler.traveler.services.impl;
 
 import br.net.traveler.traveler.domain.dto.DestinationDto;
 import br.net.traveler.traveler.domain.dto.DestinationWithScoreDto;
-import br.net.traveler.traveler.domain.entities.Continent;
-import br.net.traveler.traveler.domain.entities.Destination;
-import br.net.traveler.traveler.domain.entities.ReviewScore;
+import br.net.traveler.traveler.domain.entities.*;
+import br.net.traveler.traveler.domain.entities.pk.FavoritePk;
+import br.net.traveler.traveler.domain.exception.NotFoundException;
 import br.net.traveler.traveler.domain.mapper.DestinationMapper;
-import br.net.traveler.traveler.repositories.ContinentRepository;
-import br.net.traveler.traveler.repositories.DestinationRepository;
-import br.net.traveler.traveler.repositories.ReviewRepository;
+import br.net.traveler.traveler.repositories.*;
 import br.net.traveler.traveler.services.DestinationService;
+import br.net.traveler.traveler.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +29,10 @@ public class DestinationServiceImpl implements DestinationService {
     private ContinentRepository continentRepository;
     @Autowired
     private ReviewRepository reviewRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private FavoriteRepository favoriteRepository;
 
 
     @Override
@@ -81,5 +84,45 @@ public class DestinationServiceImpl implements DestinationService {
         });
 
         return destinationsWithScoreList;
+    }
+
+    @Override
+    public Void favorite(Integer userId, Integer destinationId) {
+        User user = findUserOrThrowNotFound(userId);
+        Destination destination = findDestinationOrThrowNotFound(destinationId);
+
+        Favorite favorite = Favorite.builder().id(FavoritePk.builder().user(user).destination(destination).build()).build();
+
+        favoriteRepository.save(favorite);
+        return null;
+    }
+
+    @Override
+    public Void unfavorite(Integer userId, Integer destinationId) {
+        findUserOrThrowNotFound(userId);
+        findDestinationOrThrowNotFound(destinationId);
+
+        Favorite favorite = favoriteRepository.findByUserAndDestination(userId, destinationId);
+
+        favoriteRepository.delete(favorite);
+        return null;
+    }
+
+    private User findUserOrThrowNotFound(Integer userId){
+        try {
+            User user = userRepository.findById(userId).get();
+            return user;
+        } catch (Exception e){
+            throw new NotFoundException("User not found");
+        }
+    }
+
+    private Destination findDestinationOrThrowNotFound(Integer destinationId){
+        try {
+            Destination destination = destinationRepository.findById(destinationId).get();
+            return  destination;
+        } catch (Exception e){
+            throw new NotFoundException("Destination not found");
+        }
     }
 }
