@@ -14,5 +14,5 @@ public interface FavoriteRepository extends JpaRepository<Favorite, FavoritePk> 
             "FROM favorites f " +
             "WHERE f.user_id = ?1 AND f.destination_id = ?2",
             nativeQuery = true)
-    public Favorite findByUserAndDestination(Integer userId, Integer destinationId);
+    public Favorite findByUserIdAndDestinationId(Integer userId, Integer destinationId);
 }

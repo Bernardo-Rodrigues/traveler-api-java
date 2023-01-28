@@ -65,6 +65,7 @@ public class Seed implements CommandLineRunner {
         Localization loc6 = Localization.builder().lat("-8.275").lng("115.166").build();
 
         Destination destination1 = Destination.builder()
+                .id(1)
                 .name("Machu Picchu")
                 .imageLink("https://hjjvsmpqvznxkydtrqzo.supabase.co/storage/v1/object/public/destinies/Machu-Picchu.jpg")
                 .country(country1)

@@ -14,6 +14,12 @@ public class DestinationMother {
                 .id(1)
                 .name("destination")
                 .imageLink("imageLink")
-                .build();
+                .localization(Localization.builder()
+                        .id(1)
+                        .build()
+                ).country(Country.builder()
+                        .id(1)
+                        .build()
+                ).build();
     }
 }

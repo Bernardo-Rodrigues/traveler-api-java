@@ -7,7 +7,7 @@ import jakarta.persistence.Table;
 import lombok.*;
 
 @Entity
-@Table(name = "achievementsUsers")
+@Table(name = "achievements_users")
 @Getter
 @Setter
 @ToString

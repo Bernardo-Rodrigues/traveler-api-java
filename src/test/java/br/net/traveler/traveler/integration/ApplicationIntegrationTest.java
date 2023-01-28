@@ -37,8 +37,10 @@ public class ApplicationIntegrationTest implements WithAssertions {
 
     private static final String USER_CONTROLLER_BASE_URL = "/users";
     private static final String DESTINATION_CONTROLLER_BASE_URL = "/destinations";
-    private static final String FAVORITE_DESTINATION_URL = DESTINATION_CONTROLLER_BASE_URL + "/1/favorite";
-    private static final String UNFAVORITE_DESTINATION_URL = DESTINATION_CONTROLLER_BASE_URL + "/1/unfavorite";
+    private static final String DESTINATION_URL = DESTINATION_CONTROLLER_BASE_URL + "/1";
+
+    private static final String FAVORITE_DESTINATION_URL = DESTINATION_URL + "/favorite";
+    private static final String UNFAVORITE_DESTINATION_URL = DESTINATION_URL + "/unfavorite";
     private static final String AUTHENTICATE_USER_URL = USER_CONTROLLER_BASE_URL + "/authenticate";
     private static final String TOP_DESTINATIONS_URL = DESTINATION_CONTROLLER_BASE_URL + "/top";
 
@@ -175,7 +177,7 @@ public class ApplicationIntegrationTest implements WithAssertions {
                 .andExpect(status().isNoContent())
                 .andReturn().getResponse();
 
-        assertThat(favoriteRepository.findByUserAndDestination(1, 1)).isNotNull();
+        assertThat(favoriteRepository.findByUserIdAndDestinationId(1, 1)).isNotNull();
     }
 
     @Test
@@ -188,6 +190,19 @@ public class ApplicationIntegrationTest implements WithAssertions {
                 .andExpect(status().isNoContent())
                 .andReturn().getResponse();
 
-        assertThat(favoriteRepository.findByUserAndDestination(1, 1)).isNull();
+        assertThat(favoriteRepository.findByUserIdAndDestinationId(1, 1)).isNull();
+    }
+
+    @Test
+    void givenAnAttemptToFindADestinationWhenTheUserAndDestinationsExitsThenReturnItWithExtraInformation() throws Exception {
+        MockHttpServletResponse response = mvc.perform(
+                        get(DESTINATION_URL)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .header("user-id", 1)
+                                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
+
+        assertThat(response.getContentAsString()).contains("First Destination", "visited", "favorited", "score", "personalNote");
     }
 }

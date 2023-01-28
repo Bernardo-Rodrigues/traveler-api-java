@@ -1,6 +1,7 @@
 package br.net.traveler.traveler.controllers;
 
 import br.net.traveler.traveler.domain.dto.DestinationDto;
+import br.net.traveler.traveler.domain.dto.DestinationInformationsDto;
 import br.net.traveler.traveler.domain.dto.DestinationWithScoreDto;
 import br.net.traveler.traveler.domain.response.DestinationListResponse;
 import br.net.traveler.traveler.services.DestinationService;
@@ -28,6 +29,15 @@ public class DestinationController {
     public ResponseEntity<List<DestinationWithScoreDto>> listTop (@QueryParam("continentName") String continentName){
         List<DestinationWithScoreDto> dtos = service.listTop(continentName);
         return ResponseEntity.ok().body(dtos);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<DestinationInformationsDto> find (
+            @RequestHeader(value = "user-id") Integer userId,
+            @PathVariable Integer id
+    ){
+        DestinationInformationsDto dto = service.find(userId, id);
+        return ResponseEntity.ok().body(dto);
     }
 
     @PostMapping("/{id}/favorite")
