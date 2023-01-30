@@ -3,6 +3,7 @@ package br.net.traveler.traveler.services.impl;
 import br.net.traveler.traveler.domain.dto.DestinationDto;
 import br.net.traveler.traveler.domain.dto.DestinationInformationsDto;
 import br.net.traveler.traveler.domain.dto.DestinationWithScoreDto;
+import br.net.traveler.traveler.domain.dto.FavoriteDestinationWithScoreDto;
 import br.net.traveler.traveler.domain.entities.*;
 import br.net.traveler.traveler.domain.entities.interfaces.ReviewAverageScore;
 import br.net.traveler.traveler.domain.entities.pk.FavoritePk;
@@ -54,7 +55,6 @@ public class DestinationServiceImpl implements DestinationService {
     @Override
     public List<DestinationWithScoreDto> listTop(String continentName) {
         List<Destination> destinations;
-        List<DestinationWithScoreDto> destinationsWithScoreList = new ArrayList<>();
         Continent continent = null;
 
         if(continentName != null && !continentName.equals("")){
@@ -67,26 +67,19 @@ public class DestinationServiceImpl implements DestinationService {
             destinations = destinationRepository.findAll();
         }
 
-        List<ReviewAverageScore> averageScores = reviewRepository.listScores();
-        Map<Integer, Double> hashMap = new HashMap<>();
-
-        averageScores.forEach(score -> {
-            hashMap.put(score.getDestinationId(), score.getScore());
-        });
-
-        destinations.forEach(destination -> {
-            destinationsWithScoreList.add(
-                    DestinationWithScoreDto.builder()
-                            .name(destination.getName())
-                            .imageLink(destination.getImageLink())
-                            .localizationId(destination.getLocalization().getId())
-                            .countryId(destination.getCountry().getId())
-                            .score(hashMap.get(destination.getId()))
-                    .build()
-            );
-        });
+        List<DestinationWithScoreDto> destinationsWithScoreList = getDestinationsWithScore(destinations);
 
         return destinationsWithScoreList;
+    }
+
+    @Override
+    public List<FavoriteDestinationWithScoreDto> listFavorites(Integer userId) {
+        findUserOrThrowNotFound(userId);
+        List<Favorite> favorites = favoriteRepository.findByUserId(userId);
+
+        List<FavoriteDestinationWithScoreDto> favoritesWithScoreList = getFavoritesWithScore(favorites);
+
+        return favoritesWithScoreList;
     }
 
     @Override
@@ -159,5 +152,55 @@ public class DestinationServiceImpl implements DestinationService {
         } catch (Exception e){
             throw new NotFoundException("Destination not found");
         }
+    }
+
+    private Map<Integer, Double> getDestinationScores(){
+        Map<Integer, Double> hashMap = new HashMap<>();
+        List<ReviewAverageScore> averageScores = reviewRepository.listScores();
+
+        averageScores.forEach(score -> {
+            hashMap.put(score.getDestinationId(), score.getScore());
+        });
+
+        return hashMap;
+    }
+
+    private List<DestinationWithScoreDto> getDestinationsWithScore(List<Destination> destinations){
+        List<DestinationWithScoreDto> destinationsWithScoreList = new ArrayList<>();
+
+        Map<Integer, Double> hashMap = getDestinationScores();
+
+        destinations.forEach(destination -> {
+            destinationsWithScoreList.add(
+                    DestinationWithScoreDto.builder()
+                            .name(destination.getName())
+                            .imageLink(destination.getImageLink())
+                            .localizationId(destination.getLocalization().getId())
+                            .countryId(destination.getCountry().getId())
+                            .score(hashMap.get(destination.getId()))
+                            .build()
+            );
+        });
+
+        return destinationsWithScoreList;
+    }
+
+    private List<FavoriteDestinationWithScoreDto> getFavoritesWithScore(List<Favorite> favorites){
+        List<FavoriteDestinationWithScoreDto> favoritesWithScoreList = new ArrayList<>();
+
+        Map<Integer, Double> hashMap = getDestinationScores();
+
+        favorites.forEach(favorite -> {
+            favoritesWithScoreList.add(
+                    FavoriteDestinationWithScoreDto.builder()
+                            .name(favorite.getId().getDestination().getName())
+                            .imageLink(favorite.getId().getDestination().getImageLink())
+                            .countryName(favorite.getId().getDestination().getCountry().getName())
+                            .score(hashMap.get(favorite.getId().getDestination().getId()))
+                            .build()
+            );
+        });
+
+        return favoritesWithScoreList;
     }
 }

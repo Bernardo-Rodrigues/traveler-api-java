@@ -1,6 +1,7 @@
 package br.net.traveler.traveler.config;
 
 import br.net.traveler.traveler.domain.entities.*;
+import br.net.traveler.traveler.domain.entities.pk.FavoritePk;
 import br.net.traveler.traveler.domain.entities.pk.ReviewsPk;
 import br.net.traveler.traveler.domain.mapper.UserMapper;
 import br.net.traveler.traveler.repositories.*;
@@ -36,6 +37,8 @@ public class SeedTest implements CommandLineRunner {
     private ReviewRepository reviewRepository;
     @Autowired
     private UserService userService;
+    @Autowired
+    private FavoriteRepository favoriteRepository;
 
     public void run(String... args) throws Exception {
         Continent continent = Continent.builder().id(1).name("Continent").build();
@@ -93,5 +96,14 @@ public class SeedTest implements CommandLineRunner {
                 .note(3)
                 .build();
         reviewRepository.saveAll(Arrays.asList(review1, review2, review3));
+
+        Favorite favorite = Favorite.builder()
+                .id(FavoritePk.builder()
+                        .user(user1)
+                        .destination(destination1)
+                        .build()
+                ).build();
+
+        favoriteRepository.save(favorite);
     }
 }

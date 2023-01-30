@@ -149,4 +149,13 @@ public class DestinationServiceUnitTest implements WithAssertions {
         assertThat(dto.getPersonalNote()).isEqualTo(5);
         assertThat(dto.getScore()).isEqualTo(3);
     }
+
+    @Test
+    void givenAnAttemptToListFavoriteDestinationWhenThereIsNoUserWithGivenIdThenThrowANotFoundException(){
+        User user = UserMother.getUser();
+
+        given(userRepository.findById(user.getId())).willReturn(null);
+
+        assertThatThrownBy(() -> destinationService.listFavorites(user.getId())).isInstanceOf(NotFoundException.class);
+    }
 }

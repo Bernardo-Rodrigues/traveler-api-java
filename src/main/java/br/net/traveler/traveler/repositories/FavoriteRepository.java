@@ -15,4 +15,13 @@ public interface FavoriteRepository extends JpaRepository<Favorite, FavoritePk> 
             "WHERE f.user_id = ?1 AND f.destination_id = ?2",
             nativeQuery = true)
     public Favorite findByUserIdAndDestinationId(Integer userId, Integer destinationId);
+    @Query(value = "SELECT * " +
+            "FROM favorites f " +
+            "JOIN destinations d " +
+            "ON d.localization_id = f.destination_id " +
+            "JOIN countries c " +
+            "ON c.id = d.country_id " +
+            "WHERE f.user_id = ?1",
+            nativeQuery = true)
+    public List<Favorite> findByUserId(Integer userId);
 }
