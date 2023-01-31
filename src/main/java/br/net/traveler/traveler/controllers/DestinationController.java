@@ -1,9 +1,6 @@
 package br.net.traveler.traveler.controllers;
 
-import br.net.traveler.traveler.domain.dto.DestinationDto;
-import br.net.traveler.traveler.domain.dto.DestinationInformationsDto;
-import br.net.traveler.traveler.domain.dto.DestinationWithScoreDto;
-import br.net.traveler.traveler.domain.dto.FavoriteDestinationWithScoreDto;
+import br.net.traveler.traveler.domain.dto.*;
 import br.net.traveler.traveler.domain.response.DestinationListResponse;
 import br.net.traveler.traveler.services.DestinationService;
 import com.azure.core.annotation.QueryParam;
@@ -45,6 +42,14 @@ public class DestinationController {
     ){
         DestinationInformationsDto dto = service.find(userId, id);
         return ResponseEntity.ok().body(dto);
+    }
+
+    @GetMapping("/{id}/tips")
+    public ResponseEntity<List<TipDto>> listTips (
+            @PathVariable Integer id
+    ){
+        List<TipDto> tips = service.listTips(id);
+        return ResponseEntity.ok().body(tips);
     }
 
     @PostMapping("/{id}/favorite")

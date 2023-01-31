@@ -1,14 +1,12 @@
 package br.net.traveler.traveler.services.impl;
 
-import br.net.traveler.traveler.domain.dto.DestinationDto;
-import br.net.traveler.traveler.domain.dto.DestinationInformationsDto;
-import br.net.traveler.traveler.domain.dto.DestinationWithScoreDto;
-import br.net.traveler.traveler.domain.dto.FavoriteDestinationWithScoreDto;
+import br.net.traveler.traveler.domain.dto.*;
 import br.net.traveler.traveler.domain.entities.*;
 import br.net.traveler.traveler.domain.entities.interfaces.ReviewAverageScore;
 import br.net.traveler.traveler.domain.entities.pk.FavoritePk;
 import br.net.traveler.traveler.domain.exception.NotFoundException;
 import br.net.traveler.traveler.domain.mapper.DestinationMapper;
+import br.net.traveler.traveler.domain.mapper.TipMapper;
 import br.net.traveler.traveler.repositories.*;
 import br.net.traveler.traveler.services.DestinationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +24,9 @@ public class DestinationServiceImpl implements DestinationService {
     DestinationRepository destinationRepository;
 
     @Autowired
-    DestinationMapper mapper;
+    DestinationMapper destinationMapper;
+    @Autowired
+    TipMapper tipMapper;
     @Autowired
     private ContinentRepository continentRepository;
     @Autowired
@@ -37,6 +37,8 @@ public class DestinationServiceImpl implements DestinationService {
     private FavoriteRepository favoriteRepository;
     @Autowired
     private AchievementUserRepository achievementUserRepository;
+    @Autowired
+    private TipRepository tipRepository;
 
 
     @Override
@@ -49,7 +51,7 @@ public class DestinationServiceImpl implements DestinationService {
             destinations = destinationRepository.findAllByNameStartsWith(name);
         }
 
-        return mapper.entityListToDtoList(destinations);
+        return destinationMapper.entityListToDtoList(destinations);
     }
 
     @Override
@@ -80,6 +82,13 @@ public class DestinationServiceImpl implements DestinationService {
         List<FavoriteDestinationWithScoreDto> favoritesWithScoreList = getFavoritesWithScore(favorites);
 
         return favoritesWithScoreList;
+    }
+
+    @Override
+    public List<TipDto> listTips(Integer destinationId) {
+        findDestinationOrThrowNotFound(destinationId);
+
+        return tipMapper.entityListToDtoList(tipRepository.findByDestinationId(destinationId));
     }
 
     @Override

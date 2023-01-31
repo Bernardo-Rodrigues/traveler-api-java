@@ -29,11 +29,13 @@ public class DestinationIntegrationTest implements WithAssertions {
 
     private static final String DESTINATION_CONTROLLER_BASE_URL = "/destinations";
     private static final String FAVORITE_DESTINATIONS_URL = DESTINATION_CONTROLLER_BASE_URL + "/favorites";
+    private static final String TOP_DESTINATIONS_URL = DESTINATION_CONTROLLER_BASE_URL + "/top";
     private static final String DESTINATION_URL = DESTINATION_CONTROLLER_BASE_URL + "/1";
 
     private static final String FAVORITE_DESTINATION_URL = DESTINATION_URL + "/favorite";
     private static final String UNFAVORITE_DESTINATION_URL = DESTINATION_URL + "/unfavorite";
-    private static final String TOP_DESTINATIONS_URL = DESTINATION_CONTROLLER_BASE_URL + "/top";
+
+    private static final String DESTINATION_TIPS_URL = DESTINATION_URL + "/tips";
 
     @Autowired
     private MockMvc mvc;
@@ -140,5 +142,17 @@ public class DestinationIntegrationTest implements WithAssertions {
                 .andReturn().getResponse();
 
         assertThat(response.getContentAsString()).contains("First Destination", "score", "countryName");
+    }
+
+    @Test
+    void givenAnAttemptToListDestinationTipsWhenTheDestinationExistsThenReturnItsTips() throws Exception {
+        MockHttpServletResponse response = mvc.perform(
+                        get(DESTINATION_TIPS_URL)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
+
+        assertThat(response.getContentAsString()).contains("First tip", "Second tip");
     }
 }

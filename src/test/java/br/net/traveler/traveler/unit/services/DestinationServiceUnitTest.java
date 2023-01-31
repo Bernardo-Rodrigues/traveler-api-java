@@ -158,4 +158,13 @@ public class DestinationServiceUnitTest implements WithAssertions {
 
         assertThatThrownBy(() -> destinationService.listFavorites(user.getId())).isInstanceOf(NotFoundException.class);
     }
+
+    @Test
+    void givenAnAttemptToListDestinationTipsWhenThereIsNoDestinationWithGivenIdThenThrowANotFoundException(){
+        Destination destination = DestinationMother.getDestination();
+
+        given(destinationRepository.findById(destination.getId())).willReturn(null);
+
+        assertThatThrownBy(() -> destinationService.listTips(destination.getId())).isInstanceOf(NotFoundException.class);
+    }
 }

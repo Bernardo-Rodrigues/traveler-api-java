@@ -39,6 +39,8 @@ public class SeedTest implements CommandLineRunner {
     private UserService userService;
     @Autowired
     private FavoriteRepository favoriteRepository;
+    @Autowired
+    private TipRepository tipRepository;
 
     public void run(String... args) throws Exception {
         Continent continent = Continent.builder().id(1).name("Continent").build();
@@ -105,5 +107,18 @@ public class SeedTest implements CommandLineRunner {
                 ).build();
 
         favoriteRepository.save(favorite);
+
+        Tip tip1 = Tip.builder()
+                .id(1)
+                .destination(destination1)
+                .description("First tip")
+                .build();
+        Tip tip2 = Tip.builder()
+                .id(2)
+                .destination(destination1)
+                .description("Second tip")
+                .build();
+
+        tipRepository.saveAll(Arrays.asList(tip1, tip2));
     }
 }
