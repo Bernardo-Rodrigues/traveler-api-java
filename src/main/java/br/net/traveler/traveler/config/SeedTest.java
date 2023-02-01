@@ -1,6 +1,7 @@
 package br.net.traveler.traveler.config;
 
 import br.net.traveler.traveler.domain.entities.*;
+import br.net.traveler.traveler.domain.entities.pk.AchievementUserPk;
 import br.net.traveler.traveler.domain.entities.pk.FavoritePk;
 import br.net.traveler.traveler.domain.entities.pk.ReviewsPk;
 import br.net.traveler.traveler.domain.mapper.UserMapper;
@@ -41,6 +42,10 @@ public class SeedTest implements CommandLineRunner {
     private FavoriteRepository favoriteRepository;
     @Autowired
     private TipRepository tipRepository;
+    @Autowired
+    private AchievementUserRepository achievementUserRepository;
+    @Autowired
+    private AchievementRepository achievementRepository;
 
     public void run(String... args) throws Exception {
         Continent continent1 = Continent.builder().id(1).name("First Continent").build();
@@ -121,5 +126,38 @@ public class SeedTest implements CommandLineRunner {
                 .build();
 
         tipRepository.saveAll(Arrays.asList(tip1, tip2));
+
+        Achievement achievement1 = Achievement.builder()
+                .id(1)
+                .name("First Achievement")
+                .description("First Achievement")
+                .destination(destination1)
+                .imageLink("Image Link 1")
+                .build();
+
+        Achievement achievement2 = Achievement.builder()
+                .id(2)
+                .name("Second Achievement")
+                .description("Second Achievement")
+                .count(5)
+                .imageLink("Image Link 2")
+                .build();
+
+        achievementRepository.saveAll(Arrays.asList(achievement1, achievement2));
+
+        AchievementUser achievementUser1 = AchievementUser.builder()
+                .id(AchievementUserPk.builder()
+                        .achievement(achievement1)
+                        .user(user1)
+                        .build()
+                ).build();
+        AchievementUser achievementUser2 = AchievementUser.builder()
+                .id(AchievementUserPk.builder()
+                        .achievement(achievement2)
+                        .user(user1)
+                        .build()
+                ).build();
+
+        achievementUserRepository.saveAll(Arrays.asList(achievementUser1, achievementUser2));
     }
 }
