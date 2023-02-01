@@ -43,10 +43,11 @@ public class SeedTest implements CommandLineRunner {
     private TipRepository tipRepository;
 
     public void run(String... args) throws Exception {
-        Continent continent = Continent.builder().id(1).name("Continent").build();
-        continentRepository.save(continent);
+        Continent continent1 = Continent.builder().id(1).name("First Continent").build();
+        Continent continent2 = Continent.builder().id(2).name("Second Continent").build();
+        continentRepository.saveAll(Arrays.asList(continent1, continent2));
 
-        Country country = Country.builder().id(1).name("Country").continent(continent).build();
+        Country country = Country.builder().id(1).name("Country").continent(continent1).build();
         countryRepository.save(country);
 
         Localization loc1 = Localization.builder().id(1).lat("0").lng("0").build();
