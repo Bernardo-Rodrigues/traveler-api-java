@@ -38,4 +38,11 @@ public class GlobalExceptionHandler {
         StandardError err = new StandardError(Instant.now(), e.getStatus().value(), error, e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(e.getStatus()).body(err);
     }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<StandardError> badRequest(BadRequestException e, HttpServletRequest request) {
+        String error = "Bad request";
+        StandardError err = new StandardError(Instant.now(), e.getStatus().value(), error, e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(e.getStatus()).body(err);
+    }
 }

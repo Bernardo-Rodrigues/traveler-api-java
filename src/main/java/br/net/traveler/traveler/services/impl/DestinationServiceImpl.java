@@ -55,6 +55,16 @@ public class DestinationServiceImpl implements DestinationService {
     }
 
     @Override
+    public DestinationDto findById(Integer destinationId) {
+        try {
+            Destination destination = destinationRepository.findById(destinationId).get();
+            return destinationMapper.entityToDto(destination);
+        } catch (Exception e) {
+            throw new NotFoundException("Destination not found");
+        }
+    }
+
+    @Override
     public List<DestinationWithScoreDto> listTop(String continentName) {
         List<Destination> destinations;
         Continent continent = null;

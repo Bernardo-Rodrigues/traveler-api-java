@@ -4,6 +4,7 @@ import br.net.traveler.traveler.domain.entities.Destination;
 import br.net.traveler.traveler.domain.entities.Review;
 import br.net.traveler.traveler.domain.entities.User;
 import br.net.traveler.traveler.domain.entities.pk.ReviewsPk;
+import br.net.traveler.traveler.domain.request.AddReviewRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +20,12 @@ public class ReviewMother {
                         .destination(destination)
                         .build()
                 ).note(5)
+                .build();
+    }
+
+    public static AddReviewRequest getAddReviewRequest() {
+        return AddReviewRequest.builder()
+                .note(5)
                 .build();
     }
 }

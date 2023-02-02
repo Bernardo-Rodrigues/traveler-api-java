@@ -7,6 +7,7 @@ import java.util.List;
 public interface DestinationService {
 
     List<DestinationDto> list(String name);
+    DestinationDto findById(Integer destinationId);
     List<DestinationWithScoreDto> listTop(String continentName);
     List<FavoriteDestinationWithScoreDto> listFavorites(Integer userId);
     List<TipDto> listTips(Integer destinationId);
