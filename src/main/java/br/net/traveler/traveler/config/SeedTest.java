@@ -13,6 +13,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
 @Configuration
 @Profile("test")
@@ -46,6 +48,10 @@ public class SeedTest implements CommandLineRunner {
     private AchievementUserRepository achievementUserRepository;
     @Autowired
     private AchievementRepository achievementRepository;
+    @Autowired
+    private TravelRepository travelRepository;
+    @Autowired
+    private TitleRepository titleRepository;
 
     public void run(String... args) throws Exception {
         Continent continent1 = Continent.builder().id(1).name("First Continent").build();
@@ -159,5 +165,21 @@ public class SeedTest implements CommandLineRunner {
                 ).build();
 
         achievementUserRepository.saveAll(Arrays.asList(achievementUser1, achievementUser2));
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, -1);
+        Date yesterday = calendar.getTime();
+        calendar.add(Calendar.DATE, 2);
+        Date tomorrow = calendar.getTime();
+
+        Travel travel = Travel.builder()
+                .id(1)
+                .startDate(yesterday)
+                .endDate(tomorrow)
+                .destination(destination1)
+                .user(user1)
+                .build();
+
+        travelRepository.save(travel);
     }
 }
