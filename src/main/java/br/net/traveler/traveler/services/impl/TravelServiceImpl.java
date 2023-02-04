@@ -2,10 +2,7 @@ package br.net.traveler.traveler.services.impl;
 
 import br.net.traveler.traveler.domain.dto.AchievementDto;
 import br.net.traveler.traveler.domain.dto.TravelDto;
-import br.net.traveler.traveler.domain.entities.Achievement;
-import br.net.traveler.traveler.domain.entities.AchievementUser;
-import br.net.traveler.traveler.domain.entities.Destination;
-import br.net.traveler.traveler.domain.entities.User;
+import br.net.traveler.traveler.domain.entities.*;
 import br.net.traveler.traveler.domain.exception.NotFoundException;
 import br.net.traveler.traveler.domain.mapper.TravelMapper;
 import br.net.traveler.traveler.repositories.AchievementUserRepository;
@@ -40,12 +37,14 @@ public class TravelServiceImpl implements TravelService {
         Date now = new Date();
         Calendar yesterday = Calendar.getInstance();
         yesterday.add(Calendar.DATE, -1);
-        System.out.println(now);
-        System.out.println(yesterday);
 
-        TravelDto dto = travelMapper.entityToDto(travelRepository.findCurrentTrip(userId, now,  yesterday.getTime()));
+        Travel travel = travelRepository.findCurrentTrip(userId, now,  yesterday.getTime());
 
-        return dto;
+        return TravelDto.builder()
+                .startDate(travel.getStartDate())
+                .endDate(travel.getEndDate())
+                .destinationName(travel.getDestination().getName())
+                .build();
     }
 
     private User findUserOrThrowNotFound(Integer userId){

@@ -16,5 +16,5 @@ public class TravelDto {
 
     private Date startDate;
     private Date endDate;
-    private Destination destination;
+    private String destinationName;
 }
