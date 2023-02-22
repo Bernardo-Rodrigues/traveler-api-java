@@ -1,6 +1,5 @@
-package br.net.traveler.traveler.domain.dto;
+package br.net.traveler.traveler.domain.request;
 
-import br.net.traveler.traveler.domain.entities.Destination;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,11 +11,10 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TravelDto {
+public class AddTravelRequest {
 
-    private Integer id;
+    private Integer destinationId;
     private Date startDate;
     private Date endDate;
-    private Integer destinationId;
-    private Integer userId;
+
 }

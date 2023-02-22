@@ -3,9 +3,11 @@ package br.net.traveler.traveler.services.impl;
 import br.net.traveler.traveler.domain.dto.AchievementDto;
 import br.net.traveler.traveler.domain.dto.TravelDto;
 import br.net.traveler.traveler.domain.entities.*;
+import br.net.traveler.traveler.domain.exception.BadRequestException;
 import br.net.traveler.traveler.domain.exception.NotFoundException;
 import br.net.traveler.traveler.domain.mapper.TravelMapper;
 import br.net.traveler.traveler.repositories.AchievementUserRepository;
+import br.net.traveler.traveler.repositories.DestinationRepository;
 import br.net.traveler.traveler.repositories.TravelRepository;
 import br.net.traveler.traveler.repositories.UserRepository;
 import br.net.traveler.traveler.services.AchievementService;
@@ -14,6 +16,8 @@ import br.net.traveler.traveler.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -29,6 +33,8 @@ public class TravelServiceImpl implements TravelService {
     @Autowired
     TravelRepository travelRepository;
     @Autowired
+    DestinationRepository destinationRepository;
+    @Autowired
     TravelMapper travelMapper;
 
     @Override
@@ -43,8 +49,37 @@ public class TravelServiceImpl implements TravelService {
         return TravelDto.builder()
                 .startDate(travel.getStartDate())
                 .endDate(travel.getEndDate())
-                .destinationName(travel.getDestination().getName())
+                .destinationId(travel.getDestination().getId())
                 .build();
+    }
+
+    @Override
+    public TravelDto createTravel(TravelDto dto) {
+        findUserOrThrowNotFound(dto.getUserId());
+        findDestinationOrThrowNotFound(dto.getDestinationId());
+
+        boolean validDates = this.checkDates(dto.getStartDate(), dto.getEndDate());
+        if (!validDates) throw new BadRequestException("Dates are invalid");
+
+        checkTripsConflict(dto.getUserId(), dto.getStartDate(), dto.getEndDate());
+
+        return travelMapper.entityToDto(travelRepository.save(travelMapper.dtoToEntity(dto)));
+    }
+
+    private boolean checkDates(Date startDate, Date endDate) {
+        return !(
+                (startDate.toInstant().isAfter(endDate.toInstant())) ||
+                 Instant.now().minus(1, ChronoUnit.DAYS).isAfter(endDate.toInstant())
+        );
+    }
+
+    private void checkTripsConflict(Integer userId, Date startdDate, Date endDate) {
+    Travel haveConflict = travelRepository.findByDate(
+                userId,
+                startdDate,
+                endDate
+        );
+    if (haveConflict != null) throw new BadRequestException("Conflict with dates of different trips");
     }
 
     private User findUserOrThrowNotFound(Integer userId){
@@ -53,6 +88,15 @@ public class TravelServiceImpl implements TravelService {
             return user;
         } catch (Exception e){
             throw new NotFoundException("User not found");
+        }
+    }
+
+    private Destination findDestinationOrThrowNotFound(Integer destinationId){
+        try {
+            Destination destination = destinationRepository.findById(destinationId).get();
+            return  destination;
+        } catch (Exception e){
+            throw new NotFoundException("Destination not found");
         }
     }
 }

@@ -1,6 +1,14 @@
 package br.net.traveler.traveler.integration;
 
 import br.net.traveler.traveler.config.SeedTest;
+import br.net.traveler.traveler.domain.entities.Review;
+import br.net.traveler.traveler.domain.entities.Travel;
+import br.net.traveler.traveler.domain.mother.ReviewMother;
+import br.net.traveler.traveler.domain.mother.TravelMother;
+import br.net.traveler.traveler.domain.request.AddReviewRequest;
+import br.net.traveler.traveler.domain.request.AddTravelRequest;
+import br.net.traveler.traveler.repositories.TravelRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +19,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -22,6 +31,9 @@ public class TravelIntegrationTest implements WithAssertions {
 
     @Autowired
     private MockMvc mvc;
+    @Autowired
+    private TravelRepository travelRepository;
+
     private SeedTest seed = new SeedTest();
 
 
@@ -35,7 +47,28 @@ public class TravelIntegrationTest implements WithAssertions {
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
 
-        assertThat(response.getContentAsString()).contains("First Destination", "startDate", "endDate");
+        assertThat(response.getContentAsString()).contains("\"destinationId\":1", "startDate", "endDate");
+    }
+
+    @Test
+    void givenAPostTravelRequestWhenTheUserAndDestinationAndExistsAndDatesAreValidThenSaveTheTrip() throws Exception {
+        AddTravelRequest request = TravelMother.getAddTravelRequest();
+
+        MockHttpServletResponse response = mvc.perform(
+                        post(TRAVEL_CONTROLLER_BASE_URL)
+                                .header("user-id", 1)
+                                .content(new ObjectMapper().writeValueAsString(request).getBytes())
+                                .accept(MediaType.APPLICATION_JSON)
+                                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isCreated())
+                .andReturn().getResponse();
+
+        assertThat(response.getContentAsString()).contains("uri");
+
+        String[] uri = response.getContentAsString().split("/");
+        Integer id = Integer.parseInt(uri[uri.length - 1].split("\"")[0]);
+
+        assertThat(travelRepository.findById(id).get()).isNotNull();
     }
 
 }
