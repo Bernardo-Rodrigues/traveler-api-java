@@ -28,4 +28,13 @@ public interface TravelRepository extends JpaRepository<Travel, Integer> {
             "OR (t.start_date < ?3 AND t.end_date >= ?3) ",
             nativeQuery = true)
     public Travel findByDate(Integer userId, Date startDate, Date endDate);
+    @Query(value = "SELECT * " +
+            "FROM travels t " +
+            "JOIN destinations d " +
+            "ON d.localization_id = t.destination_id " +
+            "WHERE t.user_id = ?1 " +
+            "AND t.start_date > NOW() " +
+            "ORDER BY t.start_date ASC ",
+            nativeQuery = true)
+    public List<Travel> listUpcomingTrips(Integer userId);
 }

@@ -35,28 +35,6 @@ public class Destination {
     @MapsId
     private Localization localization;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "destination",  cascade = CascadeType.ALL)
-    private List<Tip> tips = new ArrayList<>();
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "destination",  cascade = CascadeType.ALL)
-    private List<Description> descriptions = new ArrayList<>();
-
-    @JsonIgnore
-    @OneToOne(mappedBy = "destination", cascade = CascadeType.ALL)
-    private Achievement achievement;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "destination", cascade = CascadeType.ALL)
-    private List<Travel> travels = new ArrayList<>();
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "id.destination", cascade = CascadeType.ALL)
-    private  List<Review> reviews = new ArrayList<>();
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "id.destination", cascade = CascadeType.ALL)
-    private List<Favorite> favorites = new ArrayList<>();
 
 }

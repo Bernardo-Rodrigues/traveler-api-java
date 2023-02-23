@@ -90,4 +90,14 @@ public class TravelServiceUnitTest implements WithAssertions {
 
         assertThatThrownBy(() -> travelService.createTravel(dto)).isInstanceOf(BadRequestException.class);
     }
+
+    @Test
+    void givenAnAttemptToListUpcomingTripsWhenThereIsNoUserWithGivenIdThenThrowANotFoundException(){
+        User user = UserMother.getUser();
+        TravelDto dto = TravelMother.getTravelDto();
+
+        given(userRepository.findById(user.getId())).willReturn(null);
+
+        assertThatThrownBy(() -> travelService.listUpcomingTrips(dto.getUserId())).isInstanceOf(NotFoundException.class);
+    }
 }

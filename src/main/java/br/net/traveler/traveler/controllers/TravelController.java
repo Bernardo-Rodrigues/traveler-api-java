@@ -30,6 +30,12 @@ public class TravelController {
         return ResponseEntity.ok().body(dto);
     }
 
+    @GetMapping("")
+    public ResponseEntity<List<TravelDto>> listUpcomingTrips (@RequestHeader(value = "user-id") Integer userId){
+        List<TravelDto> dtos = service.listUpcomingTrips(userId);
+        return ResponseEntity.ok().body(dtos);
+    }
+
     @PostMapping("")
     public ResponseEntity<CreateTravelResponse> createTrip (
             @RequestHeader(value = "user-id") Integer userId,

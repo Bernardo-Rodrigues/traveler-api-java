@@ -12,6 +12,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -172,14 +173,30 @@ public class SeedTest implements CommandLineRunner {
         calendar.add(Calendar.DATE, 2);
         Date tomorrow = calendar.getTime();
 
-        Travel travel = Travel.builder()
+        Travel travel1 = Travel.builder()
                 .id(1)
-                .startDate(yesterday)
-                .endDate(tomorrow)
+                .startDate(Date.from(yesterday.toInstant().plus(8, ChronoUnit.DAYS)))
+                .endDate(Date.from(tomorrow.toInstant().plus(8, ChronoUnit.DAYS)))
                 .destination(destination1)
                 .user(user1)
                 .build();
 
-        travelRepository.save(travel);
+        Travel travel2 = Travel.builder()
+                .id(2)
+                .startDate(yesterday)
+                .endDate(tomorrow)
+                .destination(destination2)
+                .user(user1)
+                .build();
+
+        Travel travel3 = Travel.builder()
+                .id(3)
+                .startDate(Date.from(yesterday.toInstant().plus(4, ChronoUnit.DAYS)))
+                .endDate(Date.from(tomorrow.toInstant().plus(4, ChronoUnit.DAYS)))
+                .destination(destination2)
+                .user(user1)
+                .build();
+
+        travelRepository.saveAll(Arrays.asList(travel1, travel2, travel3));
     }
 }

@@ -47,7 +47,20 @@ public class TravelIntegrationTest implements WithAssertions {
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
 
-        assertThat(response.getContentAsString()).contains("\"destinationId\":1", "startDate", "endDate");
+        assertThat(response.getContentAsString()).contains("\"destinationId\":2", "startDate", "endDate");
+    }
+    @Test
+    void givenAListUpcomingTripsRequestWhenTheUserExistsAndHasTripsThenReturnTheseTrips() throws Exception {
+        MockHttpServletResponse response = mvc.perform(
+                        get(TRAVEL_CONTROLLER_BASE_URL)
+                                .header("user-id", 1)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
+
+        assertThat(response.getContentAsString()).contains("\"destinationId\":1", "\"destinationId\":2");
+        assertThat(response.getContentAsString().indexOf("\"destinationId\":2")).isLessThan(response.getContentAsString().indexOf("\"destinationId\":1"));
     }
 
     @Test

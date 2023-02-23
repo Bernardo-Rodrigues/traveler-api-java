@@ -17,7 +17,7 @@ public class TravelMother {
 
     public static AddTravelRequest getAddTravelRequest() {
         return AddTravelRequest.builder()
-                .startDate(Date.from(Instant.now().plus(7, ChronoUnit.DAYS)))
+                .startDate(Date.from(Instant.now().plus(12, ChronoUnit.DAYS)))
                 .endDate(Date.from(Instant.now().plus(14, ChronoUnit.DAYS)))
                 .destinationId(1)
                 .build();

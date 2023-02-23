@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 public class TravelServiceImpl implements TravelService {
@@ -51,6 +52,24 @@ public class TravelServiceImpl implements TravelService {
                 .endDate(travel.getEndDate())
                 .destinationId(travel.getDestination().getId())
                 .build();
+    }
+
+    @Override
+    public List<TravelDto> listUpcomingTrips(Integer userId) {
+        findUserOrThrowNotFound(userId);
+
+        List<Travel> trips = travelRepository.listUpcomingTrips(userId);
+        List<TravelDto> dtos = trips.stream().map((trip) ->
+                TravelDto.builder()
+                        .id(trip.getId())
+                        .userId(trip.getUser().getId())
+                        .destinationId(trip.getDestination().getId())
+                        .startDate(trip.getStartDate())
+                        .endDate(trip.getEndDate())
+                        .build()
+        ).toList();
+
+        return dtos;
     }
 
     @Override
