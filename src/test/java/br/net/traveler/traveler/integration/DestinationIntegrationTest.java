@@ -9,13 +9,17 @@ import br.net.traveler.traveler.domain.request.UserAuthenticationRequest;
 import br.net.traveler.traveler.domain.request.UserRegistrationRequest;
 import br.net.traveler.traveler.domain.request.UserUpdateRequest;
 import br.net.traveler.traveler.repositories.*;
+import br.net.traveler.traveler.services.JwtService;
 import br.net.traveler.traveler.services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.api.WithAssertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
@@ -25,20 +29,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class DestinationIntegrationTest implements WithAssertions {
 
     private static final String DESTINATION_CONTROLLER_BASE_URL = "/destinations";
     private static final String FAVORITE_DESTINATIONS_URL = DESTINATION_CONTROLLER_BASE_URL + "/favorites";
     private static final String TOP_DESTINATIONS_URL = DESTINATION_CONTROLLER_BASE_URL + "/top";
     private static final String DESTINATION_URL = DESTINATION_CONTROLLER_BASE_URL + "/1";
-
     private static final String FAVORITE_DESTINATION_URL = DESTINATION_URL + "/favorite";
     private static final String UNFAVORITE_DESTINATION_URL = DESTINATION_URL + "/unfavorite";
-
     private static final String DESTINATION_TIPS_URL = DESTINATION_URL + "/tips";
+    private String JWT = "";
 
     @Autowired
     private MockMvc mvc;
+    @Autowired
+    private JwtService jwtService;
     @Autowired
     private LocalizationRepository localizationRepository;
     @Autowired
@@ -53,11 +59,16 @@ public class DestinationIntegrationTest implements WithAssertions {
     private FavoriteRepository favoriteRepository;
     private SeedTest seed = new SeedTest();
 
+    @BeforeAll
+    void setJWT(){
+        JWT = jwtService.generateToken(UserDto.builder().username("user 1").build());
+    }
 
     @Test
     void givenAListDestinationsRequestWhenThereIsNoNameParameterThenReturnAllDestinations() throws Exception {
         MockHttpServletResponse response = mvc.perform(
                         get(DESTINATION_CONTROLLER_BASE_URL)
+                                .header("jwt", JWT)
                                 .accept(MediaType.APPLICATION_JSON)
                                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
@@ -70,6 +81,7 @@ public class DestinationIntegrationTest implements WithAssertions {
     void givenAListDestinationsRequestWhenThereIsNameParameterThenReturnAllDestinationsThatStartsWithThatName() throws Exception {
         MockHttpServletResponse response = mvc.perform(
                         get(DESTINATION_CONTROLLER_BASE_URL + "?name=First")
+                                .header("jwt", JWT)
                                 .accept(MediaType.APPLICATION_JSON)
                                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())

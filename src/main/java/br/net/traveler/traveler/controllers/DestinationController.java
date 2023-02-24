@@ -3,6 +3,7 @@ package br.net.traveler.traveler.controllers;
 import br.net.traveler.traveler.domain.dto.*;
 import br.net.traveler.traveler.domain.response.DestinationListResponse;
 import br.net.traveler.traveler.services.DestinationService;
+import br.net.traveler.traveler.services.JwtService;
 import com.azure.core.annotation.QueryParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +18,15 @@ public class DestinationController {
     @Autowired
     DestinationService service;
 
+    @Autowired
+    JwtService jwtService;
+
     @GetMapping
-    public ResponseEntity<List<DestinationDto>> list (@QueryParam("name") String name){
+    public ResponseEntity<List<DestinationDto>> list (
+            @RequestHeader(value = "jwt") String jwt,
+            @QueryParam("name") String name
+    ){
+        jwtService.validateToken(jwt);
         List<DestinationDto> dtos = service.list(name);
         return ResponseEntity.ok().body(dtos);
     }
