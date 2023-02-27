@@ -95,6 +95,7 @@ public class DestinationIntegrationTest implements WithAssertions {
     void givenAListTopDestinationsRequestWhenDestinationsHaveReviewsThenReturnAllDestinationsOrderedByScore() throws Exception {
         MockHttpServletResponse response = mvc.perform(
                         get(TOP_DESTINATIONS_URL)
+                                .header("jwt", JWT)
                                 .accept(MediaType.APPLICATION_JSON)
                                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
@@ -108,8 +109,8 @@ public class DestinationIntegrationTest implements WithAssertions {
     void givenADestinationWhenUserWantsToFavoriteItThenAddToTheDatabase() throws Exception {
         MockHttpServletResponse response = mvc.perform(
                         post(FAVORITE_DESTINATION_URL)
+                                .header("jwt", JWT)
                                 .accept(MediaType.APPLICATION_JSON)
-                                .header("user-id", 1)
                                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isNoContent())
                 .andReturn().getResponse();
@@ -121,8 +122,8 @@ public class DestinationIntegrationTest implements WithAssertions {
     void givenADestinationWhenUserWantsToUnfavoriteItThenRemoveFromTheDatabase() throws Exception {
         MockHttpServletResponse response = mvc.perform(
                         post(UNFAVORITE_DESTINATION_URL)
+                                .header("jwt", JWT)
                                 .accept(MediaType.APPLICATION_JSON)
-                                .header("user-id", 1)
                                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isNoContent())
                 .andReturn().getResponse();
@@ -134,8 +135,8 @@ public class DestinationIntegrationTest implements WithAssertions {
     void givenAnAttemptToFindADestinationWhenTheUserAndDestinationsExistsThenReturnItWithExtraInformation() throws Exception {
         MockHttpServletResponse response = mvc.perform(
                         get(DESTINATION_URL)
+                                .header("jwt", JWT)
                                 .accept(MediaType.APPLICATION_JSON)
-                                .header("user-id", 1)
                                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
@@ -147,8 +148,8 @@ public class DestinationIntegrationTest implements WithAssertions {
     void givenAnAttemptToListFavoriteDestinationsWhenTheUserExistsThenReturnItsFavoriteDestinationsWithScores() throws Exception {
         MockHttpServletResponse response = mvc.perform(
                         get(FAVORITE_DESTINATIONS_URL)
+                                .header("jwt", JWT)
                                 .accept(MediaType.APPLICATION_JSON)
-                                .header("user-id", 1)
                                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
@@ -160,6 +161,7 @@ public class DestinationIntegrationTest implements WithAssertions {
     void givenAnAttemptToListDestinationTipsWhenTheDestinationExistsThenReturnItsTips() throws Exception {
         MockHttpServletResponse response = mvc.perform(
                         get(DESTINATION_TIPS_URL)
+                                .header("jwt", JWT)
                                 .accept(MediaType.APPLICATION_JSON)
                                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())

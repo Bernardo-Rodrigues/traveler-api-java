@@ -32,49 +32,60 @@ public class DestinationController {
     }
 
     @GetMapping("/top")
-    public ResponseEntity<List<DestinationWithScoreDto>> listTop (@QueryParam("continentName") String continentName){
+    public ResponseEntity<List<DestinationWithScoreDto>> listTop (
+            @RequestHeader(value = "jwt") String jwt,
+            @QueryParam("continentName") String continentName
+    ){
+
+        jwtService.validateToken(jwt);
         List<DestinationWithScoreDto> dtos = service.listTop(continentName);
         return ResponseEntity.ok().body(dtos);
     }
 
     @GetMapping("/favorites")
-    public ResponseEntity<List<FavoriteDestinationWithScoreDto>> listFavorites (@RequestHeader(value = "user-id") Integer userId){
-        List<FavoriteDestinationWithScoreDto> dtos = service.listFavorites(userId);
+    public ResponseEntity<List<FavoriteDestinationWithScoreDto>> listFavorites (@RequestHeader(value = "jwt") String jwt){
+        UserDto authenticatedUser = jwtService.validateToken(jwt);
+        List<FavoriteDestinationWithScoreDto> dtos = service.listFavorites(authenticatedUser.getId());
         return ResponseEntity.ok().body(dtos);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<DestinationInformationsDto> find (
-            @RequestHeader(value = "user-id") Integer userId,
+            @RequestHeader(value = "jwt") String jwt,
             @PathVariable Integer id
     ){
-        DestinationInformationsDto dto = service.find(userId, id);
+        UserDto authenticatedUser = jwtService.validateToken(jwt);
+        DestinationInformationsDto dto = service.find(authenticatedUser.getId(), id);
         return ResponseEntity.ok().body(dto);
     }
 
     @GetMapping("/{id}/tips")
     public ResponseEntity<List<TipDto>> listTips (
+            @RequestHeader(value = "jwt") String jwt,
             @PathVariable Integer id
     ){
+        jwtService.validateToken(jwt);
         List<TipDto> tips = service.listTips(id);
         return ResponseEntity.ok().body(tips);
     }
 
     @PostMapping("/{id}/favorite")
     public ResponseEntity<Void> favorite(
-            @RequestHeader(value = "user-id") Integer userId,
+            @RequestHeader(value = "jwt") String jwt,
             @PathVariable(value = "id") Integer destinationId
     ){
-        service.favorite(userId, destinationId);
+        UserDto authenticatedUser = jwtService.validateToken(jwt);
+        service.favorite(authenticatedUser.getId(), destinationId);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/{id}/unfavorite")
     public ResponseEntity<Void> unfavorite(
-            @RequestHeader(value = "user-id") Integer userId,
+            @RequestHeader(value = "jwt") String jwt,
             @PathVariable(value = "id") Integer destinationId
     ){
-        service.unfavorite(userId, destinationId);
+        UserDto authenticatedUser = jwtService.validateToken(jwt);
+        service.unfavorite(authenticatedUser.getId(), destinationId);
         return ResponseEntity.noContent().build();
     }
 }
