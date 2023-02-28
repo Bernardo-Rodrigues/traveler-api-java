@@ -40,7 +40,6 @@ public class TravelServiceImpl implements TravelService {
 
     @Override
     public TravelDto getCurrentTrip(Integer userId) {
-        findUserOrThrowNotFound(userId);
         Date now = new Date();
         Calendar yesterday = Calendar.getInstance();
         yesterday.add(Calendar.DATE, -1);
@@ -56,8 +55,6 @@ public class TravelServiceImpl implements TravelService {
 
     @Override
     public List<TravelDto> listUpcomingTrips(Integer userId) {
-        findUserOrThrowNotFound(userId);
-
         List<Travel> trips = travelRepository.listUpcomingTrips(userId);
         List<TravelDto> dtos = trips.stream().map((trip) ->
                 TravelDto.builder()
@@ -74,7 +71,6 @@ public class TravelServiceImpl implements TravelService {
 
     @Override
     public TravelDto createTravel(TravelDto dto) {
-        findUserOrThrowNotFound(dto.getUserId());
         findDestinationOrThrowNotFound(dto.getDestinationId());
 
         boolean validDates = this.checkDates(dto.getStartDate(), dto.getEndDate());
@@ -99,15 +95,6 @@ public class TravelServiceImpl implements TravelService {
                 endDate
         );
     if (haveConflict != null) throw new BadRequestException("Conflict with dates of different trips");
-    }
-
-    private User findUserOrThrowNotFound(Integer userId){
-        try {
-            User user = userRepository.findById(userId).get();
-            return user;
-        } catch (Exception e){
-            throw new NotFoundException("User not found");
-        }
     }
 
     private Destination findDestinationOrThrowNotFound(Integer destinationId){

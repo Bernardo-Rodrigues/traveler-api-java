@@ -46,8 +46,7 @@ public class ReviewServiceImpl implements ReviewService {
     ReviewMapper reviewMapper;
 
     @Override
-    public ReviewDto createReview(Integer userId, Integer destinationId, Integer note) {
-        User user = findUserOrThrowNotFound(userId);
+    public ReviewDto createReview(UserDto userDto, Integer destinationId, Integer note) {
         Destination destination = findDestinationOrThrowNotFound(destinationId);
 
         if(note < 1 || note > 5) throw new BadRequestException("Note ut of range");
@@ -55,7 +54,7 @@ public class ReviewServiceImpl implements ReviewService {
         Review review = reviewRepository.save(Review.builder()
                 .id(ReviewsPk.builder()
                         .destination(destination)
-                        .user(user)
+                        .user(userMapper.dtoToEntity(userDto))
                         .build()
                 ).note(note)
                 .build()
@@ -66,15 +65,6 @@ public class ReviewServiceImpl implements ReviewService {
                 .destinationId(review.getId().getDestination().getId())
                 .userId(review.getId().getUser().getId())
                 .build();
-    }
-
-    private User findUserOrThrowNotFound(Integer userId){
-        try {
-            User user = userRepository.findById(userId).get();
-            return user;
-        } catch (Exception e){
-            throw new NotFoundException("User not found");
-        }
     }
 
     private Destination findDestinationOrThrowNotFound(Integer destinationId){

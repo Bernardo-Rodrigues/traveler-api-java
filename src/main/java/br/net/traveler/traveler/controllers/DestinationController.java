@@ -75,7 +75,7 @@ public class DestinationController {
             @PathVariable(value = "id") Integer destinationId
     ){
         UserDto authenticatedUser = jwtService.validateToken(jwt);
-        service.favorite(authenticatedUser.getId(), destinationId);
+        service.favorite(authenticatedUser, destinationId);
         return ResponseEntity.noContent().build();
     }
 

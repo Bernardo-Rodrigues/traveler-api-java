@@ -30,7 +30,7 @@ public class ReviewController {
             @RequestBody AddReviewRequest requestBody
     ){
         UserDto authenticatedUser = jwtService.validateToken(jwt);
-        ReviewDto dto = service.createReview(authenticatedUser.getId(), destinationId, requestBody.getNote());
+        ReviewDto dto = service.createReview(authenticatedUser, destinationId, requestBody.getNote());
         return ResponseEntity.ok().body(dto);
     }
 }

@@ -29,8 +29,6 @@ public class AchievementServiceImpl implements AchievementService {
 
     @Override
     public List<AchievementDto> listByUser(Integer userId) {
-        userService.findById(userId);
-
         List<AchievementUser> achievementUsers = achievementUserRepository.findByUserId(userId);
         List<AchievementDto> dtos = new ArrayList<>();
 

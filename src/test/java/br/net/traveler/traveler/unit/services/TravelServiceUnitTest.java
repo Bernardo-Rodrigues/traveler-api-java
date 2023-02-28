@@ -43,22 +43,10 @@ public class TravelServiceUnitTest implements WithAssertions {
     private TravelRepository travelReopository;
 
     @Test
-    void givenAnAttemptToAddATravelWhenThereIsNoUserWithGivenIdThenThrowANotFoundException(){
-        User user = UserMother.getUser();
-        TravelDto dto = TravelMother.getTravelDto();
-
-        given(userRepository.findById(user.getId())).willReturn(null);
-
-        assertThatThrownBy(() -> travelService.createTravel(dto)).isInstanceOf(NotFoundException.class);
-    }
-
-    @Test
     void givenAnAttemptToAddATravelWhenThereIsNoDestinationWithGivenIdThenThrowANotFoundException(){
-        User user = UserMother.getUser();
         Destination destination = DestinationMother.getDestination();
         TravelDto dto = TravelMother.getTravelDto();
 
-        given(userRepository.findById(user.getId())).willReturn(Optional.of(user));
         given(destinationRepository.findById(destination.getId())).willReturn(null);
 
         assertThatThrownBy(() -> travelService.createTravel(dto)).isInstanceOf(NotFoundException.class);
@@ -66,12 +54,10 @@ public class TravelServiceUnitTest implements WithAssertions {
 
     @Test
     void givenAnAttemptToAddATravelWhenTheDatesAreInvalidThenThrowABadRequestException(){
-        User user = UserMother.getUser();
         Destination destination = DestinationMother.getDestination();
         TravelDto dto = TravelMother.getTravelDto();
         dto.setEndDate(Date.from(Instant.now().minus(7, ChronoUnit.DAYS)));
 
-        given(userRepository.findById(user.getId())).willReturn(Optional.of(user));
         given(destinationRepository.findById(destination.getId())).willReturn(Optional.of(destination));
 
         assertThatThrownBy(() -> travelService.createTravel(dto)).isInstanceOf(BadRequestException.class);
@@ -84,20 +70,9 @@ public class TravelServiceUnitTest implements WithAssertions {
         TravelDto dto = TravelMother.getTravelDto();
         Travel travel = TravelMother.getTravel();
 
-        given(userRepository.findById(user.getId())).willReturn(Optional.of(user));
         given(destinationRepository.findById(destination.getId())).willReturn(Optional.of(destination));
         given(travelReopository.findByDate(user.getId(), dto.getStartDate(), dto.getEndDate())).willReturn(travel);
 
         assertThatThrownBy(() -> travelService.createTravel(dto)).isInstanceOf(BadRequestException.class);
-    }
-
-    @Test
-    void givenAnAttemptToListUpcomingTripsWhenThereIsNoUserWithGivenIdThenThrowANotFoundException(){
-        User user = UserMother.getUser();
-        TravelDto dto = TravelMother.getTravelDto();
-
-        given(userRepository.findById(user.getId())).willReturn(null);
-
-        assertThatThrownBy(() -> travelService.listUpcomingTrips(dto.getUserId())).isInstanceOf(NotFoundException.class);
     }
 }

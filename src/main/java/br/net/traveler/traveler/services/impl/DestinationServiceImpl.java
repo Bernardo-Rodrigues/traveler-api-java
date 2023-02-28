@@ -7,6 +7,7 @@ import br.net.traveler.traveler.domain.entities.pk.FavoritePk;
 import br.net.traveler.traveler.domain.exception.NotFoundException;
 import br.net.traveler.traveler.domain.mapper.DestinationMapper;
 import br.net.traveler.traveler.domain.mapper.TipMapper;
+import br.net.traveler.traveler.domain.mapper.UserMapper;
 import br.net.traveler.traveler.repositories.*;
 import br.net.traveler.traveler.services.DestinationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +22,14 @@ import java.util.Map;
 public class DestinationServiceImpl implements DestinationService {
 
     @Autowired
-    DestinationRepository destinationRepository;
+    private DestinationRepository destinationRepository;
 
     @Autowired
-    DestinationMapper destinationMapper;
+    private DestinationMapper destinationMapper;
     @Autowired
-    TipMapper tipMapper;
+    private TipMapper tipMapper;
+    @Autowired
+    private UserMapper userMapper;
     @Autowired
     private ContinentRepository continentRepository;
     @Autowired
@@ -86,7 +89,6 @@ public class DestinationServiceImpl implements DestinationService {
 
     @Override
     public List<FavoriteDestinationWithScoreDto> listFavorites(Integer userId) {
-        findUserOrThrowNotFound(userId);
         List<Favorite> favorites = favoriteRepository.findByUserId(userId);
 
         List<FavoriteDestinationWithScoreDto> favoritesWithScoreList = getFavoritesWithScore(favorites);
@@ -102,11 +104,10 @@ public class DestinationServiceImpl implements DestinationService {
     }
 
     @Override
-    public Void favorite(Integer userId, Integer destinationId) {
-        User user = findUserOrThrowNotFound(userId);
+    public Void favorite(UserDto userDto, Integer destinationId) {
         Destination destination = findDestinationOrThrowNotFound(destinationId);
 
-        Favorite favorite = Favorite.builder().id(FavoritePk.builder().user(user).destination(destination).build()).build();
+        Favorite favorite = Favorite.builder().id(FavoritePk.builder().user(userMapper.dtoToEntity(userDto)).destination(destination).build()).build();
 
         favoriteRepository.save(favorite);
         return null;
@@ -114,7 +115,6 @@ public class DestinationServiceImpl implements DestinationService {
 
     @Override
     public Void unfavorite(Integer userId, Integer destinationId) {
-        findUserOrThrowNotFound(userId);
         findDestinationOrThrowNotFound(destinationId);
 
         Favorite favorite = favoriteRepository.findByUserIdAndDestinationId(userId, destinationId);
@@ -125,7 +125,6 @@ public class DestinationServiceImpl implements DestinationService {
 
     @Override
     public DestinationInformationsDto find(Integer userId, Integer destinationId) {
-        findUserOrThrowNotFound(userId);
         Destination destination = findDestinationOrThrowNotFound(destinationId);
 
         DestinationInformationsDto dto = getDtoWithExtraInformations(userId, destination);
@@ -153,15 +152,6 @@ public class DestinationServiceImpl implements DestinationService {
         if (score != null) dto.setScore(score.getScore());
 
         return  dto;
-    }
-
-    private User findUserOrThrowNotFound(Integer userId){
-        try {
-            User user = userRepository.findById(userId).get();
-            return user;
-        } catch (Exception e){
-            throw new NotFoundException("User not found");
-        }
     }
 
     private Destination findDestinationOrThrowNotFound(Integer destinationId){

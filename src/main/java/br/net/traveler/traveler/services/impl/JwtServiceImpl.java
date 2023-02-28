@@ -2,14 +2,11 @@ package br.net.traveler.traveler.services.impl;
 
 import br.net.traveler.traveler.domain.dto.UserDto;
 import br.net.traveler.traveler.domain.exception.BadRequestException;
+import br.net.traveler.traveler.domain.exception.UnauthorizedException;
 import br.net.traveler.traveler.domain.mapper.UserMapper;
 import br.net.traveler.traveler.repositories.UserRepository;
 import br.net.traveler.traveler.services.JwtService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.JwtParser;
-import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -43,14 +40,13 @@ public class JwtServiceImpl implements JwtService {
 
         try {
             Claims claims = parser.parseClaimsJws(token).getBody();
-            if (isTokenExpired(token)){
-                throw new BadRequestException("JWT expired");
-            }
             UserDto dto = userMapper.entityToDto(userRepository.findByUsername(claims.getSubject()));
-            if(dto == null) throw new BadRequestException("JWT invalid");
+            if(dto == null) throw new UnauthorizedException("JWT invalid user");
             return dto;
         } catch (SignatureException e) {
-            throw new BadRequestException("JWT invalid signature");
+            throw new UnauthorizedException("JWT invalid signature");
+        } catch (ExpiredJwtException e) {
+            throw new UnauthorizedException("JWT expired");
         }
     }
 

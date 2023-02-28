@@ -36,23 +36,12 @@ public class ReviewServiceUnitTest implements WithAssertions {
     private DestinationRepository destinationRepository;
 
     @Test
-    void givenAnAttemptToAddAReviewToADestinationWhenThereIsNoUserWithGivenIdThenThrowANotFoundException(){
-        User user = UserMother.getUser();
-        Destination destination = DestinationMother.getDestination();
-
-        given(userRepository.findById(user.getId())).willReturn(null);
-
-        assertThatThrownBy(() -> reviewService.createReview(user.getId(), destination.getId(), 5)).isInstanceOf(NotFoundException.class);
-    }
-
-    @Test
     void givenAnAttemptToAddAReviewToADestinationWhenThereIsNoDestinationWithGivenIdThenThrowANotFoundException(){
-        User user = UserMother.getUser();
+        UserDto userDto = UserMother.getUserDto();
         Destination destination = DestinationMother.getDestination();
 
-        given(userRepository.findById(user.getId())).willReturn(Optional.of(user));
         given(destinationRepository.findById(destination.getId())).willReturn(null);
 
-        assertThatThrownBy(() -> reviewService.createReview(user.getId(), destination.getId(), 5)).isInstanceOf(NotFoundException.class);
+        assertThatThrownBy(() -> reviewService.createReview(userDto, destination.getId(), 5)).isInstanceOf(NotFoundException.class);
     }
 }
