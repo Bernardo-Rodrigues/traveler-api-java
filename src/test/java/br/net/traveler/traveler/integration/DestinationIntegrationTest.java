@@ -22,6 +22,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -30,6 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ActiveProfiles("test")
 public class DestinationIntegrationTest implements WithAssertions {
 
     private static final String DESTINATION_CONTROLLER_BASE_URL = "/destinations";
@@ -57,7 +59,6 @@ public class DestinationIntegrationTest implements WithAssertions {
     private DestinationRepository destinationRepository;
     @Autowired
     private FavoriteRepository favoriteRepository;
-    private SeedTest seed = new SeedTest();
 
     @BeforeAll
     void setJWT(){

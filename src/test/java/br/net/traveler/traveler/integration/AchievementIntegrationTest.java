@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -20,6 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ActiveProfiles("test")
 public class AchievementIntegrationTest implements WithAssertions {
 
     private static final String ACHIEVEMENT_CONTROLLER_BASE_URL = "/achievements";
@@ -29,7 +31,6 @@ public class AchievementIntegrationTest implements WithAssertions {
     private MockMvc mvc;
     @Autowired
     private JwtService jwtService;
-    private SeedTest seed = new SeedTest();
 
     @BeforeAll
     void setJWT(){

@@ -20,6 +20,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -29,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ActiveProfiles("test")
 public class TravelIntegrationTest implements WithAssertions {
 
     private static final String TRAVEL_CONTROLLER_BASE_URL = "/travels";
@@ -46,8 +48,6 @@ public class TravelIntegrationTest implements WithAssertions {
     }
     @Autowired
     private TravelRepository travelRepository;
-
-    private SeedTest seed = new SeedTest();
 
 
     @Test
