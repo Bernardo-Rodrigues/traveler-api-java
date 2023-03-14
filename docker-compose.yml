@@ -1,45 +1,48 @@
-version: '3.8'
-
 services:
-  postgres:
+  traveler-db:
+    container_name: traveler-postgres
     image: postgres:alpine
-    container_name: my-postgres
-    restart: always
+    environment:
+      POSTGRES_USER: rootuser
+      POSTGRES_PASSWORD: rootpwd
+      POSTGRES_DB: traveler
+    volumes:
+      - postgres:/data/postgres
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "5432:5432"
-    volumes:
-      - postgres:/data/db
-    environment:
-      - POSTGRES_USER=rootuser
-      - POSTGRES_PASSWORD=rootpwd
-      - POSTGRES_DB=traveler
     networks:
-      - postgres
-  pgadmin:
+      - traveler
+
+  traveler-pgadmin:
+    container_name: traveler-pgadmin
     image: dpage/pgadmin4
-    container_name: my-pdadmin
-    restart: always
-    ports:
-      - "5050:80"
     environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
-      - PGADMIN_DEFAULT_PASSWORD=root
+      PGADMIN_DEFAULT_EMAIL: traveler@admin.com
+      PGADMIN_DEFAULT_PASSWORD: adminpwd
     volumes:
       - pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    depends_on:
+      - traveler-db
     networks:
-      - postgres
-  api:
+      - traveler
+
+  traveler-api:
     build: .
-    container_name: my-api
-    restart: always
+    container_name: traveler-api
     ports:
       - "8080:8080"
     depends_on:
-      - postgres
+      - traveler-db
+    networks:
+      - traveler
 
 networks:
-  postgres:
+  traveler:
     driver: bridge
+
 volumes:
   postgres:
   pgadmin:
