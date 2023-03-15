@@ -1,17 +1,8 @@
 package br.net.traveler.traveler.integration;
 
-import br.net.traveler.traveler.config.SeedTest;
 import br.net.traveler.traveler.domain.dto.UserDto;
-import br.net.traveler.traveler.domain.entities.User;
-import br.net.traveler.traveler.domain.mapper.UserMapper;
-import br.net.traveler.traveler.domain.mother.UserMother;
-import br.net.traveler.traveler.domain.request.UserAuthenticationRequest;
-import br.net.traveler.traveler.domain.request.UserRegistrationRequest;
-import br.net.traveler.traveler.domain.request.UserUpdateRequest;
 import br.net.traveler.traveler.repositories.*;
 import br.net.traveler.traveler.services.JwtService;
-import br.net.traveler.traveler.services.UserService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -19,7 +10,6 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ActiveProfiles;
@@ -48,21 +38,11 @@ public class DestinationIntegrationTest implements WithAssertions {
     @Autowired
     private JwtService jwtService;
     @Autowired
-    private LocalizationRepository localizationRepository;
-    @Autowired
-    private ReviewRepository reviewRepository;
-    @Autowired
-    private ContinentRepository continentRepository;
-    @Autowired
-    private CountryRepository countryRepository;
-    @Autowired
-    private DestinationRepository destinationRepository;
-    @Autowired
     private FavoriteRepository favoriteRepository;
 
     @BeforeAll
     void setJWT(){
-        JWT = jwtService.generateToken(UserDto.builder().username("user 1").build());
+        JWT = jwtService.generateToken(UserDto.builder().id("id1").build());
     }
 
     @Test
@@ -116,7 +96,7 @@ public class DestinationIntegrationTest implements WithAssertions {
                 .andExpect(status().isNoContent())
                 .andReturn().getResponse();
 
-        assertThat(favoriteRepository.findByUserIdAndDestinationId(1, 1)).isNotNull();
+        assertThat(favoriteRepository.findByUserIdAndDestinationId("id1", 1)).isNotNull();
     }
 
     @Test
@@ -129,7 +109,7 @@ public class DestinationIntegrationTest implements WithAssertions {
                 .andExpect(status().isNoContent())
                 .andReturn().getResponse();
 
-        assertThat(favoriteRepository.findByUserIdAndDestinationId(1, 1)).isNull();
+        assertThat(favoriteRepository.findByUserIdAndDestinationId("id1", 1)).isNull();
     }
 
     @Test

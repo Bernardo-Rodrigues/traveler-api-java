@@ -1,6 +1,5 @@
 package br.net.traveler.traveler.domain.dto;
 
-import br.net.traveler.traveler.domain.entities.Destination;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,5 +17,5 @@ public class TravelDto {
     private Date startDate;
     private Date endDate;
     private Integer destinationId;
-    private Integer userId;
+    private String userId;
 }

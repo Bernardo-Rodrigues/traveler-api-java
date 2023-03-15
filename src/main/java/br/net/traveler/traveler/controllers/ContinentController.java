@@ -2,9 +2,7 @@ package br.net.traveler.traveler.controllers;
 
 import br.net.traveler.traveler.domain.dto.*;
 import br.net.traveler.traveler.services.ContinentService;
-import br.net.traveler.traveler.services.DestinationService;
 import br.net.traveler.traveler.services.JwtService;
-import com.azure.core.annotation.QueryParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

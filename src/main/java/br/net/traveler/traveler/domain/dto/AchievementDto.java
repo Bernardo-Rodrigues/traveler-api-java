@@ -1,7 +1,5 @@
 package br.net.traveler.traveler.domain.dto;
 
-import br.net.traveler.traveler.domain.entities.Destination;
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

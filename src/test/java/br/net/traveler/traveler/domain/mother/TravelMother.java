@@ -2,15 +2,11 @@ package br.net.traveler.traveler.domain.mother;
 
 import br.net.traveler.traveler.domain.dto.TravelDto;
 import br.net.traveler.traveler.domain.entities.Destination;
-import br.net.traveler.traveler.domain.entities.Review;
 import br.net.traveler.traveler.domain.entities.Travel;
-import br.net.traveler.traveler.domain.entities.User;
-import br.net.traveler.traveler.domain.entities.pk.ReviewsPk;
 import br.net.traveler.traveler.domain.request.AddTravelRequest;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.Date;
 
 public class TravelMother {
@@ -28,7 +24,7 @@ public class TravelMother {
                 .startDate(Date.from(Instant.now()))
                 .endDate(Date.from(Instant.now().plus(5, ChronoUnit.DAYS)))
                 .destinationId(1)
-                .userId(1)
+                .userId("id1")
                 .build();
     }
 

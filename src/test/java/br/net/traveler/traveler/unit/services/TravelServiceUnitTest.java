@@ -1,7 +1,6 @@
 package br.net.traveler.traveler.unit.services;
 
 import br.net.traveler.traveler.domain.dto.TravelDto;
-import br.net.traveler.traveler.domain.dto.UserDto;
 import br.net.traveler.traveler.domain.entities.Destination;
 import br.net.traveler.traveler.domain.entities.Travel;
 import br.net.traveler.traveler.domain.entities.User;
@@ -10,11 +9,8 @@ import br.net.traveler.traveler.domain.exception.NotFoundException;
 import br.net.traveler.traveler.domain.mother.DestinationMother;
 import br.net.traveler.traveler.domain.mother.TravelMother;
 import br.net.traveler.traveler.domain.mother.UserMother;
-import br.net.traveler.traveler.domain.request.AddTravelRequest;
 import br.net.traveler.traveler.repositories.DestinationRepository;
 import br.net.traveler.traveler.repositories.TravelRepository;
-import br.net.traveler.traveler.repositories.UserRepository;
-import br.net.traveler.traveler.services.impl.ReviewServiceImpl;
 import br.net.traveler.traveler.services.impl.TravelServiceImpl;
 import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.Test;
@@ -35,8 +31,6 @@ public class TravelServiceUnitTest implements WithAssertions {
 
     @InjectMocks
     private TravelServiceImpl travelService;
-    @Mock
-    private UserRepository userRepository;
     @Mock
     private DestinationRepository destinationRepository;
     @Mock

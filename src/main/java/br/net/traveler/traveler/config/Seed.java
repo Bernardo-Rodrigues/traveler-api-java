@@ -15,26 +15,18 @@ public class Seed implements CommandLineRunner {
 
     @Autowired
     private ContinentRepository continentRepository;
-
     @Autowired
     private CountryRepository countryRepository;
-
     @Autowired
     private DestinationRepository destinationRepository;
-
     @Autowired
     private LocalizationRepository localizationRepository;
-
     @Autowired
     private TipRepository tipRepository;
     @Autowired
     private DescriptionRepository descriptionRepository;
     @Autowired
     private AchievementRepository achievementRepository;
-    @Autowired
-    private AvatarRepository avatarRepository;
-    @Autowired
-    private TitleRepository titleRepository;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -299,53 +291,6 @@ public class Seed implements CommandLineRunner {
 
         achievementRepository.saveAll(Arrays.asList(achievement1, achievement2, achievement3, achievement4, achievement5,
                                                     achievement6, achievement7, achievement8, achievement9));
-
-        Avatar avatar1 = Avatar.builder()
-                .imageLink("https://hjjvsmpqvznxkydtrqzo.supabase.co/storage/v1/object/public/avatars/Boy-1")
-                .build();
-        Avatar avatar2 = Avatar.builder()
-                .imageLink("https://hjjvsmpqvznxkydtrqzo.supabase.co/storage/v1/object/public/avatars/Boy-2")
-                .build();
-        Avatar avatar3 = Avatar.builder()
-                .imageLink("https://hjjvsmpqvznxkydtrqzo.supabase.co/storage/v1/object/public/avatars/Boy-3")
-                .build();
-        Avatar avatar4 = Avatar.builder()
-                .imageLink("https://hjjvsmpqvznxkydtrqzo.supabase.co/storage/v1/object/public/avatars/Girl-1")
-                .build();
-        Avatar avatar5 = Avatar.builder()
-                .imageLink("https://hjjvsmpqvznxkydtrqzo.supabase.co/storage/v1/object/public/avatars/Girl-2")
-                .build();
-        Avatar avatar6 = Avatar.builder()
-                .imageLink("https://hjjvsmpqvznxkydtrqzo.supabase.co/storage/v1/object/public/avatars/Girl-3")
-                .build();
-        Avatar avatar7 = Avatar.builder()
-                .imageLink("https://hjjvsmpqvznxkydtrqzo.supabase.co/storage/v1/object/public/avatars/Boy-Traveler")
-                .tripsCount(3)
-                .build();
-        Avatar avatar8 = Avatar.builder()
-                .imageLink("https://hjjvsmpqvznxkydtrqzo.supabase.co/storage/v1/object/public/avatars/Girl-Traveler")
-                .tripsCount(3)
-                .build();
-
-        avatarRepository.saveAll(Arrays.asList(avatar1, avatar2, avatar3, avatar4, avatar5, avatar6, avatar7, avatar8));
-
-        Title title1 = Title.builder()
-                .text("Curious")
-                .build();
-        Title title2 = Title.builder()
-                .text("Beginner Traveler")
-                .tripsCount(3)
-                .build();
-        Title title3 = Title.builder()
-                .text("Intermediate Traveler")
-                .tripsCount(5)
-                .build();
-        Title title4 = Title.builder()
-                .text("Experient Traveler")
-                .tripsCount(10)
-                .build();
-
-        titleRepository.saveAll(Arrays.asList(title1, title2, title3, title4));
 
         continentRepository.saveAll(Arrays.asList(continent2, continent4, continent6, continent7));
     }

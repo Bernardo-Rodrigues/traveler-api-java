@@ -43,7 +43,6 @@ public class DestinationServiceImpl implements DestinationService {
     @Autowired
     private TipRepository tipRepository;
 
-
     @Override
     public List<DestinationDto> list(String name) {
         List<Destination> destinations;
@@ -88,7 +87,7 @@ public class DestinationServiceImpl implements DestinationService {
     }
 
     @Override
-    public List<FavoriteDestinationWithScoreDto> listFavorites(Integer userId) {
+    public List<FavoriteDestinationWithScoreDto> listFavorites(String userId) {
         List<Favorite> favorites = favoriteRepository.findByUserId(userId);
 
         List<FavoriteDestinationWithScoreDto> favoritesWithScoreList = getFavoritesWithScore(favorites);
@@ -114,7 +113,7 @@ public class DestinationServiceImpl implements DestinationService {
     }
 
     @Override
-    public Void unfavorite(Integer userId, Integer destinationId) {
+    public Void unfavorite(String userId, Integer destinationId) {
         findDestinationOrThrowNotFound(destinationId);
 
         Favorite favorite = favoriteRepository.findByUserIdAndDestinationId(userId, destinationId);
@@ -124,14 +123,14 @@ public class DestinationServiceImpl implements DestinationService {
     }
 
     @Override
-    public DestinationInformationsDto find(Integer userId, Integer destinationId) {
+    public DestinationInformationsDto find(String userId, Integer destinationId) {
         Destination destination = findDestinationOrThrowNotFound(destinationId);
 
         DestinationInformationsDto dto = getDtoWithExtraInformations(userId, destination);
         return dto;
     }
 
-    private DestinationInformationsDto getDtoWithExtraInformations(Integer userId, Destination destination){
+    private DestinationInformationsDto getDtoWithExtraInformations(String userId, Destination destination){
         DestinationInformationsDto dto = DestinationInformationsDto.builder()
                 .name(destination.getName())
                 .imageLink(destination.getImageLink())

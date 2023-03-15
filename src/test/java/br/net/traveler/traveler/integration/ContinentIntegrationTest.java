@@ -1,8 +1,6 @@
 package br.net.traveler.traveler.integration;
 
-import br.net.traveler.traveler.config.SeedTest;
 import br.net.traveler.traveler.domain.dto.UserDto;
-import br.net.traveler.traveler.repositories.*;
 import br.net.traveler.traveler.services.JwtService;
 import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -17,7 +15,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -36,7 +33,7 @@ public class ContinentIntegrationTest implements WithAssertions {
 
     @BeforeAll
     void setJWT(){
-        JWT = jwtService.generateToken(UserDto.builder().username("user 1").build());
+        JWT = jwtService.generateToken(UserDto.builder().id("id1").build());
     }
 
     @Test

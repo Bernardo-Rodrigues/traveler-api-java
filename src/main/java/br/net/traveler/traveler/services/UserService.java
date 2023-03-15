@@ -4,8 +4,6 @@ import br.net.traveler.traveler.domain.dto.UserDto;
 
 public interface UserService {
 
-    UserDto createUser(UserDto user);
-    UserDto findById(Integer id);
-    UserDto updateUser(UserDto user, Integer id);
-    UserDto identifyUser(UserDto user);
+    UserDto createUser(String id);
+    void deleteUser(String id);
 }

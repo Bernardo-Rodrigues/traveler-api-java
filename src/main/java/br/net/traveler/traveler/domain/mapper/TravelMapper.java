@@ -1,10 +1,6 @@
 package br.net.traveler.traveler.domain.mapper;
 
-import br.net.traveler.traveler.domain.dto.AchievementDto;
-import br.net.traveler.traveler.domain.dto.DestinationDto;
 import br.net.traveler.traveler.domain.dto.TravelDto;
-import br.net.traveler.traveler.domain.entities.Achievement;
-import br.net.traveler.traveler.domain.entities.Destination;
 import br.net.traveler.traveler.domain.entities.Travel;
 import br.net.traveler.traveler.domain.request.AddTravelRequest;
 import org.mapstruct.Mapper;

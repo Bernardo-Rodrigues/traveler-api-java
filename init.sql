@@ -1,40 +1,7 @@
-CREATE TABLE IF NOT EXISTS public.avatars
-(
-    id integer NOT NULL,
-    image_link character varying(255) COLLATE pg_catalog."default",
-    trips_count integer,
-    CONSTRAINT avatars_pkey PRIMARY KEY (id),
-    CONSTRAINT uk_c09icr9e6norvxrb1l6494574 UNIQUE (image_link)
-);
-
-CREATE TABLE IF NOT EXISTS public.titles
-(
-    id integer NOT NULL,
-    text character varying(255) COLLATE pg_catalog."default",
-    trips_count integer,
-    CONSTRAINT titles_pkey PRIMARY KEY (id),
-    CONSTRAINT uk_brsqxr6xos982hog7i8neesny UNIQUE (text)
-);
-
 CREATE TABLE IF NOT EXISTS public.users
 (
-    id integer NOT NULL,
-    email character varying(255) COLLATE pg_catalog."default",
-    password character varying(255) COLLATE pg_catalog."default",
-    username character varying(255) COLLATE pg_catalog."default",
-    avatar_id integer,
-    title_id integer DEFAULT 1,
-    CONSTRAINT users_pkey PRIMARY KEY (id),
-    CONSTRAINT uk_6dotkott2kjsp8vw4d0m25fb7 UNIQUE (email),
-    CONSTRAINT uk_r43af9ap4edm43mmtq01oddj6 UNIQUE (username),
-    CONSTRAINT fk7tamg8hd3ubuy97jk242s0kwf FOREIGN KEY (avatar_id)
-        REFERENCES public.avatars (id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION,
-    CONSTRAINT fkgmvtut2rqlaqfxvulph5bf7vu FOREIGN KEY (title_id)
-        REFERENCES public.titles (id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
+    id character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT users_pkey PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS public.continents

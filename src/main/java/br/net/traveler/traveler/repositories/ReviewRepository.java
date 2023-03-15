@@ -26,5 +26,5 @@ public interface ReviewRepository extends JpaRepository<Review, ReviewsPk> {
             "FROM reviews r " +
             "WHERE r.user_id = ?1 AND r.destination_id = ?2",
             nativeQuery = true)
-    public Review findByUserIdAndDestinationId(Integer userId, Integer destinationId);
+    public Review findByUserIdAndDestinationId(String userId, Integer destinationId);
 }

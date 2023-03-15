@@ -18,7 +18,7 @@ public interface TravelRepository extends JpaRepository<Travel, Integer> {
             "AND t.start_date <= ?2 " +
             "AND t.end_date >= ?3 ",
             nativeQuery = true)
-    public Travel findCurrentTrip(Integer userId, Date now, Date yesterday);
+    public Travel findCurrentTrip(String userId, Date now, Date yesterday);
     @Query(value = "SELECT * " +
             "FROM travels t " +
             "JOIN destinations d " +
@@ -27,7 +27,7 @@ public interface TravelRepository extends JpaRepository<Travel, Integer> {
             "AND (t.start_date <= ?2 AND t.end_date > ?2) " +
             "OR (t.start_date < ?3 AND t.end_date >= ?3) ",
             nativeQuery = true)
-    public Travel findByDate(Integer userId, Date startDate, Date endDate);
+    public Travel findByDate(String userId, Date startDate, Date endDate);
     @Query(value = "SELECT * " +
             "FROM travels t " +
             "JOIN destinations d " +
@@ -36,5 +36,5 @@ public interface TravelRepository extends JpaRepository<Travel, Integer> {
             "AND t.start_date > NOW() " +
             "ORDER BY t.start_date ASC ",
             nativeQuery = true)
-    public List<Travel> listUpcomingTrips(Integer userId);
+    public List<Travel> listUpcomingTrips(String userId);
 }

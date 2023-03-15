@@ -1,10 +1,8 @@
 package br.net.traveler.traveler.controllers;
 
-import br.net.traveler.traveler.domain.dto.AchievementDto;
 import br.net.traveler.traveler.domain.dto.ReviewDto;
 import br.net.traveler.traveler.domain.dto.UserDto;
 import br.net.traveler.traveler.domain.request.AddReviewRequest;
-import br.net.traveler.traveler.services.AchievementService;
 import br.net.traveler.traveler.services.JwtService;
 import br.net.traveler.traveler.services.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;

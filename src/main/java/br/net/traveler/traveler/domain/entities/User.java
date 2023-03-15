@@ -18,24 +18,7 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
-    @Column(unique = true)
-    private String username;
-
-    @Column(unique = true)
-    private String email;
-
-    private String password;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "avatarId")
-    private Avatar avatar;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "titleId", columnDefinition = "integer default 1")
-    private Title title;
+    private String id;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

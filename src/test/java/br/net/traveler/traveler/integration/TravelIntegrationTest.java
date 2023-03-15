@@ -1,12 +1,7 @@
 package br.net.traveler.traveler.integration;
 
-import br.net.traveler.traveler.config.SeedTest;
 import br.net.traveler.traveler.domain.dto.UserDto;
-import br.net.traveler.traveler.domain.entities.Review;
-import br.net.traveler.traveler.domain.entities.Travel;
-import br.net.traveler.traveler.domain.mother.ReviewMother;
 import br.net.traveler.traveler.domain.mother.TravelMother;
-import br.net.traveler.traveler.domain.request.AddReviewRequest;
 import br.net.traveler.traveler.domain.request.AddTravelRequest;
 import br.net.traveler.traveler.repositories.TravelRepository;
 import br.net.traveler.traveler.services.JwtService;
@@ -44,7 +39,7 @@ public class TravelIntegrationTest implements WithAssertions {
 
     @BeforeAll
     void setJWT(){
-        JWT = jwtService.generateToken(UserDto.builder().username("user 1").build());
+        JWT = jwtService.generateToken(UserDto.builder().id("id1").build());
     }
     @Autowired
     private TravelRepository travelRepository;

@@ -1,12 +1,10 @@
 package br.net.traveler.traveler.controllers;
 
-import br.net.traveler.traveler.domain.dto.AchievementDto;
 import br.net.traveler.traveler.domain.dto.TravelDto;
 import br.net.traveler.traveler.domain.dto.UserDto;
 import br.net.traveler.traveler.domain.mapper.TravelMapper;
 import br.net.traveler.traveler.domain.request.AddTravelRequest;
 import br.net.traveler.traveler.domain.response.CreateTravelResponse;
-import br.net.traveler.traveler.services.AchievementService;
 import br.net.traveler.traveler.services.JwtService;
 import br.net.traveler.traveler.services.TravelService;
 import org.springframework.beans.factory.annotation.Autowired;

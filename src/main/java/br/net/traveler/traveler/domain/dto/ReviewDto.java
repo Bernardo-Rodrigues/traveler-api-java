@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ReviewDto {
 
-    private Integer userId;
+    private String userId;
     private Integer destinationId;
     private Integer note;
 }

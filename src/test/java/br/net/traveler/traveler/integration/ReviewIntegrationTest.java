@@ -1,6 +1,5 @@
 package br.net.traveler.traveler.integration;
 
-import br.net.traveler.traveler.config.SeedTest;
 import br.net.traveler.traveler.domain.dto.UserDto;
 import br.net.traveler.traveler.domain.entities.Destination;
 import br.net.traveler.traveler.domain.entities.Review;
@@ -24,7 +23,6 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -47,14 +45,13 @@ public class ReviewIntegrationTest implements WithAssertions {
 
     @BeforeAll
     void setJWT(){
-        JWT = jwtService.generateToken(UserDto.builder().username("user 2").build());
+        JWT = jwtService.generateToken(UserDto.builder().id("id1").build());
     }
 
     @Test
     void givenAListAchievementsRequestWhenTheUSerExistsThenReturnAllAchievementsOfTheUser() throws Exception {
         AddReviewRequest request = ReviewMother.getAddReviewRequest();
         User user = UserMother.getUser();
-        user.setId(2);
         Destination destination = DestinationMother.getDestination();
         destination.setId(2);
         

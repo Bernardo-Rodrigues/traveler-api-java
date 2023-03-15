@@ -39,7 +39,7 @@ public class TravelServiceImpl implements TravelService {
     TravelMapper travelMapper;
 
     @Override
-    public TravelDto getCurrentTrip(Integer userId) {
+    public TravelDto getCurrentTrip(String userId) {
         Date now = new Date();
         Calendar yesterday = Calendar.getInstance();
         yesterday.add(Calendar.DATE, -1);
@@ -54,7 +54,7 @@ public class TravelServiceImpl implements TravelService {
     }
 
     @Override
-    public List<TravelDto> listUpcomingTrips(Integer userId) {
+    public List<TravelDto> listUpcomingTrips(String userId) {
         List<Travel> trips = travelRepository.listUpcomingTrips(userId);
         List<TravelDto> dtos = trips.stream().map((trip) ->
                 TravelDto.builder()
@@ -88,7 +88,7 @@ public class TravelServiceImpl implements TravelService {
         );
     }
 
-    private void checkTripsConflict(Integer userId, Date startdDate, Date endDate) {
+    private void checkTripsConflict(String userId, Date startdDate, Date endDate) {
     Travel haveConflict = travelRepository.findByDate(
                 userId,
                 startdDate,

@@ -34,8 +34,6 @@ public class DestinationServiceUnitTest implements WithAssertions {
     @Mock
     private DestinationMapper destinationMapper;
     @Mock
-    private UserRepository userRepository;
-    @Mock
     private FavoriteRepository favoriteRepository;
     @Mock
     private AchievementUserRepository achievementUserRepository ;

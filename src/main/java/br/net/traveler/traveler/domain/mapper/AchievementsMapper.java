@@ -1,9 +1,7 @@
 package br.net.traveler.traveler.domain.mapper;
 
 import br.net.traveler.traveler.domain.dto.AchievementDto;
-import br.net.traveler.traveler.domain.dto.ContinentDto;
 import br.net.traveler.traveler.domain.entities.Achievement;
-import br.net.traveler.traveler.domain.entities.Continent;
 import org.mapstruct.Mapper;
 
 import java.util.List;

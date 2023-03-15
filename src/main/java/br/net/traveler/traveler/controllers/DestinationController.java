@@ -1,7 +1,6 @@
 package br.net.traveler.traveler.controllers;
 
 import br.net.traveler.traveler.domain.dto.*;
-import br.net.traveler.traveler.domain.response.DestinationListResponse;
 import br.net.traveler.traveler.services.DestinationService;
 import br.net.traveler.traveler.services.JwtService;
 import com.azure.core.annotation.QueryParam;

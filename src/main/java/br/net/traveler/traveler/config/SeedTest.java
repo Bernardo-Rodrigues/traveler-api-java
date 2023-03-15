@@ -25,16 +25,12 @@ public class SeedTest implements CommandLineRunner {
     private UserMapper userMapper;
     @Autowired
     private ContinentRepository continentRepository;
-
     @Autowired
     private CountryRepository countryRepository;
-
     @Autowired
     private DestinationRepository destinationRepository;
-
     @Autowired
     private LocalizationRepository localizationRepository;
-
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -51,8 +47,7 @@ public class SeedTest implements CommandLineRunner {
     private AchievementRepository achievementRepository;
     @Autowired
     private TravelRepository travelRepository;
-    @Autowired
-    private TitleRepository titleRepository;
+
 
     public void run(String... args) throws Exception {
         Continent continent1 = Continent.builder().id(1).name("First Continent").build();
@@ -83,20 +78,13 @@ public class SeedTest implements CommandLineRunner {
         destinationRepository.saveAll(Arrays.asList(destination1, destination2));
 
         User user1 = User.builder()
-                .id(1)
-                .username("user 1")
-                .email("email1@email.com")
-                .password("password1")
+                .id("id1")
                 .build();
         User user2 = User.builder()
-                .id(2)
-                .username("user 2")
-                .email("email2@email.com")
-                .password("password2")
+                .id("id2")
                 .build();
 
-        userService.createUser(userMapper.entityToDto(user1));
-        userService.createUser(userMapper.entityToDto(user2));
+        userRepository.saveAll(Arrays.asList(user1, user2));
 
         Review review1 = Review.builder()
                 .id(ReviewsPk.builder().destination(destination1).user(user1).build())

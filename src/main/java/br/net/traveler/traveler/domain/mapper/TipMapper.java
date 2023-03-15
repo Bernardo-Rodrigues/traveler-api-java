@@ -2,7 +2,6 @@ package br.net.traveler.traveler.domain.mapper;
 
 import br.net.traveler.traveler.domain.dto.DestinationDto;
 import br.net.traveler.traveler.domain.dto.TipDto;
-import br.net.traveler.traveler.domain.entities.Destination;
 import br.net.traveler.traveler.domain.entities.Tip;
 import org.mapstruct.Mapper;
 
