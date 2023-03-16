@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS public.descriptions
 
 CREATE TABLE IF NOT EXISTS public.favorites
 (
-    user_id integer NOT NULL,
+    user_id character varying(255) COLLATE pg_catalog."default" NOT NULL,
     destination_id integer NOT NULL,
     CONSTRAINT favorites_pkey PRIMARY KEY (destination_id, user_id),
     CONSTRAINT fkc9hci4f44c3i90h4fbsesr26d FOREIGN KEY (destination_id)
@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS public.favorites
 CREATE TABLE IF NOT EXISTS public.reviews
 (
     note integer,
-    user_id integer NOT NULL,
+    user_id character varying(255) COLLATE pg_catalog."default" NOT NULL,
     destination_id integer NOT NULL,
     CONSTRAINT reviews_pkey PRIMARY KEY (destination_id, user_id),
     CONSTRAINT fkcgy7qjc1r99dp117y9en6lxye FOREIGN KEY (user_id)
@@ -115,7 +115,7 @@ CREATE TABLE IF NOT EXISTS public.travels
     end_date timestamp(6) without time zone,
     start_date timestamp(6) without time zone,
     destination_id integer,
-    user_id integer,
+    user_id character varying(255) COLLATE pg_catalog."default",
     CONSTRAINT travels_pkey PRIMARY KEY (id),
     CONSTRAINT fkrtjmw7ntheqchtl1b07a1qlfd FOREIGN KEY (user_id)
         REFERENCES public.users (id) MATCH SIMPLE
@@ -146,7 +146,7 @@ CREATE TABLE IF NOT EXISTS public.achievements
 
 CREATE TABLE IF NOT EXISTS public.achievements_users
 (
-    user_id integer NOT NULL,
+    user_id character varying(255) COLLATE pg_catalog."default" NOT NULL,
     achievement_id integer NOT NULL,
     CONSTRAINT achievements_users_pkey PRIMARY KEY (achievement_id, user_id),
     CONSTRAINT fkccdnwtrjxx5wogjgomepkjlbu FOREIGN KEY (achievement_id)
