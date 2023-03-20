@@ -36,8 +36,6 @@ public class SeedTest implements CommandLineRunner {
     @Autowired
     private ReviewRepository reviewRepository;
     @Autowired
-    private UserService userService;
-    @Autowired
     private FavoriteRepository favoriteRepository;
     @Autowired
     private TipRepository tipRepository;
@@ -59,7 +57,8 @@ public class SeedTest implements CommandLineRunner {
 
         Localization loc1 = Localization.builder().id(1).lat("0").lng("0").build();
         Localization loc2 = Localization.builder().id(2).lat("1").lng("1").build();
-        localizationRepository.saveAll(Arrays.asList(loc1, loc2));
+        Localization loc3 = Localization.builder().id(3).lat("2").lng("2").build();
+        localizationRepository.saveAll(Arrays.asList(loc1, loc2, loc3));
 
         Destination destination1 = Destination.builder()
                 .id(1)
@@ -70,12 +69,20 @@ public class SeedTest implements CommandLineRunner {
                 .build();
         Destination destination2 = Destination.builder()
                 .id(2)
-                .name("Second Destination 2")
-                .imageLink("Second ImageLink 2")
+                .name("Second Destination")
+                .imageLink("Second ImageLink")
                 .country(country)
                 .localization(loc2)
                 .build();
-        destinationRepository.saveAll(Arrays.asList(destination1, destination2));
+
+        Destination destination3 = Destination.builder()
+                .id(3)
+                .name("Third Destination")
+                .imageLink("Third ImageLink")
+                .country(country)
+                .localization(loc3)
+                .build();
+        destinationRepository.saveAll(Arrays.asList(destination1, destination2, destination3));
 
         User user1 = User.builder()
                 .id("id1")
@@ -134,11 +141,27 @@ public class SeedTest implements CommandLineRunner {
                 .id(2)
                 .name("Second Achievement")
                 .description("Second Achievement")
-                .count(5)
+                .destination(destination2)
                 .imageLink("Image Link 2")
                 .build();
 
-        achievementRepository.saveAll(Arrays.asList(achievement1, achievement2));
+        Achievement achievement3 = Achievement.builder()
+                .id(3)
+                .name("Third Achievement")
+                .description("Third Achievement")
+                .destination(destination3)
+                .imageLink("Image Link 3")
+                .build();
+
+        Achievement achievement4 = Achievement.builder()
+                .id(4)
+                .name("Count Achievement")
+                .description("Count Achievement")
+                .count(3)
+                .imageLink("Image Link 4")
+                .build();
+
+        achievementRepository.saveAll(Arrays.asList(achievement1, achievement2, achievement3, achievement4));
 
         AchievementUser achievementUser1 = AchievementUser.builder()
                 .id(AchievementUserPk.builder()

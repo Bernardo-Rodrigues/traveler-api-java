@@ -122,7 +122,7 @@ public class DestinationIntegrationTest implements WithAssertions {
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
 
-        assertThat(response.getContentAsString()).contains("First Destination", "visited", "favorited", "score", "personalNote");
+        assertThat(response.getContentAsString()).contains("First Destination", "visited\":true", "favorited\":true", "score\":4.0", "personalNote\":5");
     }
 
     @Test

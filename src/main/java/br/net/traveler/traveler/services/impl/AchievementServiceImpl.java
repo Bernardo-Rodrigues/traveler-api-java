@@ -39,4 +39,9 @@ public class AchievementServiceImpl implements AchievementService {
 
         return dtos;
     }
+
+    @Override
+    public List<AchievementDto> get(String userId, Integer destinationId) {
+        return null;
+    }
 }

@@ -24,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AchievementIntegrationTest implements WithAssertions {
 
     private static final String ACHIEVEMENT_CONTROLLER_BASE_URL = "/achievements";
+    private static final String GET_ACHIEVEMENT_URL = ACHIEVEMENT_CONTROLLER_BASE_URL + "/destinations" + "/3";
     private String JWT = "";
 
     @Autowired
@@ -37,7 +38,7 @@ public class AchievementIntegrationTest implements WithAssertions {
     }
 
     @Test
-    void givenAListAchievementsRequestWhenTheUSerExistsThenReturnAllAchievementsOfTheUser() throws Exception {
+    void givenAListAchievementsRequestWhenTheUserExistsThenReturnAllAchievementsOfTheUser() throws Exception {
         MockHttpServletResponse response = mvc.perform(
                         get(ACHIEVEMENT_CONTROLLER_BASE_URL)
                                 .header("jwt", JWT)
@@ -47,6 +48,19 @@ public class AchievementIntegrationTest implements WithAssertions {
                 .andReturn().getResponse();
 
         assertThat(response.getContentAsString()).contains("First Achievement", "Second Achievement");
+    }
+
+    @Test
+    void givenAGetDestinationAchievementRequestWhenTheDestinationExistsAndTheUserDoesNotHaveTheAchievementYetThenReturnAllAchievementsObtained() throws Exception {
+        MockHttpServletResponse response = mvc.perform(
+                        get(GET_ACHIEVEMENT_URL)
+                                .header("jwt", JWT)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
+
+        assertThat(response.getContentAsString()).contains("Third Achievement", "Count Achievement");
     }
 
 }
