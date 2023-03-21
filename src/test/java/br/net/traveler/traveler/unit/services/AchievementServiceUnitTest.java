@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
 
 @ExtendWith({MockitoExtension.class})
 public class AchievementServiceUnitTest implements WithAssertions {
@@ -40,7 +39,7 @@ public class AchievementServiceUnitTest implements WithAssertions {
 
         given(destinationRepository.findById(destination.getId())).willReturn(null);
 
-        assertThatThrownBy(() -> achievementService.get(userDto.getId(), destination.getId())).isInstanceOf(NotFoundException.class);
+        assertThatThrownBy(() -> achievementService.get(userDto, destination.getId())).isInstanceOf(NotFoundException.class);
     }
 
     @Test
@@ -51,7 +50,7 @@ public class AchievementServiceUnitTest implements WithAssertions {
         given(destinationRepository.findById(destination.getId())).willReturn(Optional.of(destination));
         given(achievementRepository.findByDestinationId(destination.getId())).willReturn(null);
 
-        assertThatThrownBy(() -> achievementService.get(userDto.getId(), destination.getId())).isInstanceOf(ServerException.class);
+        assertThatThrownBy(() -> achievementService.get(userDto, destination.getId())).isInstanceOf(ServerException.class);
     }
 
     @Test
@@ -65,7 +64,7 @@ public class AchievementServiceUnitTest implements WithAssertions {
         given(achievementRepository.findByDestinationId(destination.getId())).willReturn(achievement);
         given(achievementUserRepository.findByUserIdAndAchievementId(user.getId(), achievement.getId())).willReturn(achievementUser);
 
-        List<AchievementDto> achievements = achievementService.get(user.getId(), destination.getId());
+        List<AchievementDto> achievements = achievementService.get(UserMother.getUserDto(), destination.getId());
 
         assertThat(achievements).isNull();
     }

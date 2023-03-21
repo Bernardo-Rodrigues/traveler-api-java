@@ -24,4 +24,11 @@ public interface AchievementUserRepository extends JpaRepository<AchievementUser
             "WHERE au.user_id = ?1",
             nativeQuery = true)
     public List<AchievementUser> findByUserId(String userId);
+    @Query(value = "SELECT * " +
+            "FROM achievements_users au " +
+            "JOIN achievements a ON a.id = au.achievement_id " +
+            "WHERE au.user_id = ?1 " +
+            "AND a.count IS NULL",
+            nativeQuery = true)
+    public List<AchievementUser> findAllOfDestinationsByUserId(String userId);
 }

@@ -60,6 +60,8 @@ public class AchievementIntegrationTest implements WithAssertions {
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
 
+        System.out.println(response.getContentAsString());
+
         assertThat(response.getContentAsString()).contains("Third Achievement", "Count Achievement");
     }
 

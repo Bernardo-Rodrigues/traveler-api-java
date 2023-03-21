@@ -12,4 +12,5 @@ import static org.mapstruct.ReportingPolicy.IGNORE;
 public interface AchievementsMapper {
 
     List<AchievementDto> entityListToDtoList(List<Achievement> entities);
+    AchievementDto entityToDto(Achievement entity);
 }
